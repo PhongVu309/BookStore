@@ -18,20 +18,21 @@
           <i class="fas fa-list"></i>
           Quản lý danh mục
         </li>
-        <li [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
-          <i class="fas fa-shopping-cart"></i>
-          Quản lý đơn hàng
-        </li>
         <li [class.active]="activeTab === 'authors'" (click)="setActiveTab('authors')">
           <i class="fas fa-user-edit"></i>
           Quản lý tác giả
         </li>
+        <li [class.active]="activeTab === 'publisher'" (click)="setActiveTab('publisher')">
+          <i class="fas fa-users"></i>
+          Quản lý nhà xuất bản
+        </li>
+        <li [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
+          <i class="fas fa-shopping-cart"></i>
+          Quản lý đơn hàng
+        </li>
         <li [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
           <i class="fas fa-users"></i>
           Quản lý tài khoản
-        </li><li [class.active]="activeTab === 'publisher'" (click)="setActiveTab('publisher')">
-          <i class="fas fa-users"></i>
-          Quản lý nhà xuất bản
         </li>
       </ul>
     </nav>
@@ -151,8 +152,9 @@
                     <th>Giá</th>
                     <th>Giảm giá</th>
                     <th>Danh mục</th>
-                    <th>Tác giả</th>
+                    <th style="width: 150px;">Tác giả</th>
                     <th>Nhà xuất bản</th>
+                    <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -175,26 +177,140 @@
           </div>
         </div>
         <div *ngSwitchCase="'categories'">
-          <h2>Quản lý danh mục</h2>
+          <div class="products-management">
+            <h2>Quản lý danh mục</h2>
 
+            <!-- Category Form -->
+            <form class="product-form" [formGroup]="categoryForm" (ngSubmit)="onSubmitCategory()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Tên danh mục</label>
+                  <input type="text" id="name" formControlName="name" class="form-control">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{{editingCategoryId ? 'Cập nhật' : 'Thêm mới'}}</button>
+                <button type="button" class="btn btn-secondary" (click)="resetCategoryForm()">Hủy</button>
+              </div>
+            </form>
+
+            <!-- Categories Table -->
+            <div class="products-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên danh mục</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let category of categories">
+                    <td>{{category.id}}</td>
+                    <td>{{category.name}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning" (click)="editCategory(category)">Sửa</button>
+                      <button class="btn btn-sm btn-danger" (click)="deleteCategory(category.id)" style="margin-left: 10px;">Xóa</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'authors'">
+          <div class="products-management">
+            <h2>Quản lý tác giả</h2>
+
+            <!-- Author Form -->
+            <form class="product-form" [formGroup]="authorForm" (ngSubmit)="onSubmitAuthor()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="authorName">Tên tác giả</label>
+                  <input type="text" id="authorName" formControlName="name" class="form-control">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{{editingAuthorId ? 'Cập nhật' : 'Thêm mới'}}</button>
+                <button type="button" class="btn btn-secondary" (click)="resetAuthorForm()">Hủy</button>
+              </div>
+            </form>
+
+            <!-- Authors Table -->
+            <div class="products-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên tác giả</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let author of authors">
+                    <td>{{author.id}}</td>
+                    <td>{{author.name}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning" (click)="editAuthor(author)">Sửa</button>
+                      <button class="btn btn-sm btn-danger" (click)="deleteAuthor(author.id)" style="margin-left: 10px;">Xóa</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'publisher'">
+          <div class="products-management">
+            <h2>Quản lý nhà xuất bản</h2>
+
+            <!-- Publisher Form -->
+            <form class="product-form" [formGroup]="publisherForm" (ngSubmit)="onSubmitPublisher()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="publisherName">Tên nhà xuất bản</label>
+                  <input type="text" id="publisherName" formControlName="name" class="form-control">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{{editingPublisherId ? 'Cập nhật' : 'Thêm mới'}}</button>
+                <button type="button" class="btn btn-secondary" (click)="resetPublisherForm()">Hủy</button>
+              </div>
+            </form>
+
+            <!-- Publishers Table -->
+            <div class="products-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên nhà xuất bản</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let publisher of publishers">
+                    <td>{{publisher.id}}</td>
+                    <td>{{publisher.name}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning" (click)="editPublisher(publisher)">Sửa</button>
+                      <button class="btn btn-sm btn-danger" (click)="deletePublisher(publisher.id)" style="margin-left: 10px;">Xóa</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div *ngSwitchCase="'orders'">
           <h2>Quản lý đơn hàng</h2>
           <!-- Orders management content -->
-        </div>
-        <div *ngSwitchCase="'authors'">
-          <h2>Quản lý tác giả</h2>
-          <!-- Authors management content -->
         </div>
         <div *ngSwitchCase="'users'">
           <h2>Quản lý tài khoản</h2>
           <!-- Users management content -->
         </div>
 
-        <div *ngSwitchCase="'publisher'">
-          <h2>Quản lý nhà xuất bản</h2>
-          <!-- Users management content -->
-        </div>
       </div>
     </div>
   </div>

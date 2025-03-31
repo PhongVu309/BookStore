@@ -17,4 +17,19 @@ public class PublisherController {
     public List<Publisher> getPublisher() {
         return publisherService.getAllPublishers();
     }
+    
+    @PostMapping
+    public Publisher createPublisher(@RequestBody Publisher publisher) {
+        return publisherService.createPublisher(publisher);
+    }
+
+    @PutMapping("/{id}")
+    public Publisher updatePublisher(@PathVariable Long id, @RequestBody Publisher publisher) {
+        return publisherService.updatePublisher(id, publisher);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePublisher(@PathVariable Long id) {
+        publisherService.deletePublisher(id);
+    }
 }

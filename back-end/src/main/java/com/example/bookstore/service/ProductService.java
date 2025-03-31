@@ -17,13 +17,11 @@ public class ProductService {
     }
 
     public Product createProduct(Product product) {
-        // Không cần set Category object nữa
         return productRepository.save(product);
     }
 
     public Product updateProduct(Integer id, Product product) {
         product.setId(id);
-        // Không cần set Category object nữa
         return productRepository.save(product);
     }
 

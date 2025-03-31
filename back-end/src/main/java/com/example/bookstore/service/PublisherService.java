@@ -15,4 +15,17 @@ public class PublisherService {
     public List<Publisher> getAllPublishers() {
         return publisherRepository.findAll();
     }
+
+    public Publisher createPublisher(Publisher publisher) {
+        return publisherRepository.save(publisher);
+    }
+
+    public Publisher updatePublisher(Long id, Publisher publisher) {
+        publisher.setId(id);
+        return publisherRepository.save(publisher);
+    }
+
+    public void deletePublisher(Long id) {
+        publisherRepository.deleteById(id);
+    }
 }

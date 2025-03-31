@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProductService, Product } from '../../services/products/product.service';
-import { AuthorService } from '../../services/author/author.service';
-import { PublisherService } from '../../services/publisher/publisher.service';
-import { CategoryService } from '../../services/category/category.service';
+import { Author, AuthorService } from '../../services/author/author.service';
+import { PublisherService, Publisher } from '../../services/publisher/publisher.service';
+import { Category, CategoryService } from '../../services/category/category.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,12 +17,18 @@ import { CategoryService } from '../../services/category/category.service';
 export class AdminComponent implements OnInit {
   activeTab: string = 'dashboard';
   productForm: FormGroup;
+  categoryForm: FormGroup;
+  authorForm: FormGroup;
+  publisherForm: FormGroup;
   products: Product[] = [];
   categories: any[] = [];
   authors: any[] = [];
   publishers: any[] = [];
   editMode: boolean = false;
   editingId: number | null = null;
+  editingCategoryId: number | null = null;
+  editingAuthorId: number | null = null;
+  editingPublisherId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +49,18 @@ export class AdminComponent implements OnInit {
       category_id: ['', Validators.required],
       author_id: ['', Validators.required],
       publisher_id: ['', Validators.required]
+    });
+
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required]
+    });
+
+    this.authorForm = this.fb.group({
+      name: ['', Validators.required]
+    });
+
+    this.publisherForm = this.fb.group({
+      name: ['', Validators.required]
     });
   }
 
@@ -87,7 +105,6 @@ export class AdminComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (data) => {
         this.categories = data;
-        console.log('Loaded categories:', data);
       },
       error: (error) => console.error('Error loading categories:', error)
     });
@@ -132,6 +149,21 @@ export class AdminComponent implements OnInit {
     this.productForm.reset();
   }
 
+  resetCategoryForm() {
+    this.categoryForm.reset();
+    this.editingCategoryId = null;
+  }
+
+  resetAuthorForm() {
+    this.authorForm.reset();
+    this.editingAuthorId = null;
+  }
+
+  resetPublisherForm() {
+    this.publisherForm.reset();
+    this.editingPublisherId = null;
+  }
+
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
@@ -149,5 +181,149 @@ export class AdminComponent implements OnInit {
   getPublisherName(id: number): string {
     const publisher = this.publishers.find(p => p.id === id);
     return publisher ? publisher.name : '';
+  }
+
+  // Category methods
+  onSubmitCategory() {
+    if (this.categoryForm.valid) {
+      if (this.editingCategoryId) {
+        // Update
+        this.categoryService.updateCategory(this.editingCategoryId, {
+          id: this.editingCategoryId,
+          name: this.categoryForm.value.name
+        }).subscribe({
+          next: () => {
+            this.loadCategories();
+            this.resetCategoryForm();
+          },
+          error: (error) => console.error('Error updating category:', error)
+        });
+      } else {
+        // Create
+        this.categoryService.createCategory({
+          name: this.categoryForm.value.name
+        } as Category).subscribe({
+          next: () => {
+            this.loadCategories();
+            this.resetCategoryForm();
+          },
+          error: (error) => console.error('Error creating category:', error)
+        });
+      }
+    }
+  }
+
+  editCategory(category: Category) {
+    this.editingCategoryId = category.id;
+    this.categoryForm.patchValue({
+      name: category.name
+    });
+  }
+
+  deleteCategory(id: number) {
+    if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+      this.categoryService.deleteCategory(id).subscribe({
+        next: () => {
+          this.loadCategories();
+        },
+        error: (error) => console.error('Error deleting category:', error)
+      });
+    }
+  }
+
+  // Author methods
+  onSubmitAuthor() {
+    if (this.authorForm.valid) {
+      if (this.editingAuthorId) {
+        // Update
+        this.authorService.updateAuthor(this.editingAuthorId, {
+          id: this.editingAuthorId,
+          name: this.authorForm.value.name
+        }).subscribe({
+          next: () => {
+            this.loadAuthors();
+            this.resetAuthorForm();
+          },
+          error: (error) => console.error('Error updating author:', error)
+        });
+      } else {
+        // Create
+        this.authorService.createAuthor({
+          name: this.authorForm.value.name
+        } as Author).subscribe({
+          next: () => {
+            this.loadAuthors();
+            this.resetAuthorForm();
+          },
+          error: (error) => console.error('Error creating author:', error)
+        });
+      }
+    }
+  }
+
+  editAuthor(author: Author) {
+    this.editingAuthorId = author.id;
+    this.authorForm.patchValue({
+      name: author.name
+    });
+  }
+
+  deleteAuthor(id: number) {
+    if (confirm('Bạn có chắc chắn muốn xóa tác giả này?')) {
+      this.authorService.deleteAuthor(id).subscribe({
+        next: () => {
+          this.loadAuthors();
+        },
+        error: (error) => console.error('Error deleting author:', error)
+      });
+    }
+  }
+
+  // Publisher methods
+  onSubmitPublisher() {
+    if (this.publisherForm.valid) {
+      if (this.editingPublisherId) {
+        // Update
+        this.publisherService.updatePublisher(this.editingPublisherId, {
+          id: this.editingPublisherId,
+          name: this.publisherForm.value.name
+        }).subscribe({
+          next: () => {
+            this.loadPublishers();
+            this.resetPublisherForm();
+          },
+          error: (error) => console.error('Error updating publisher:', error)
+        });
+      } else {
+        // Create
+        this.publisherService.createPublisher({
+          name: this.publisherForm.value.name
+        } as Publisher).subscribe({
+          next: () => {
+            this.loadPublishers();
+            this.resetPublisherForm();
+          },
+          error: (error) => console.error('Error creating publisher:', error)
+        });
+      }
+    }
+  }
+
+  editPublisher(publisher: Publisher) {
+    this.editingPublisherId = publisher.id;
+    this.publisherForm.patchValue({
+      name: publisher.name
+    });
+  }
+
+  deletePublisher(id: number) {
+    if (confirm('Bạn có chắc chắn muốn xóa nhà xuất bản này?')) {
+      this.publisherService.deletePublisher(id).subscribe({
+        next: () => {
+          this.loadPublishers();
+        },
+        error: (error) => console.error('Error deleting publisher:', error)
+      });
+    }
   }
 }

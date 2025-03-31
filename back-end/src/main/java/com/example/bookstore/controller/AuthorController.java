@@ -17,4 +17,19 @@ public class AuthorController {
     public List<Author> getAllAuthors() {
         return authorService.getAllAuthors();
     }
+
+    @PostMapping
+    public Author createAuthor(@RequestBody Author author) {
+        return authorService.createAuthor(author);
+    }
+
+    @PutMapping("/{id}")
+    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
+        return authorService.updateAuthor(id, author);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAuthor(@PathVariable Long id) {
+        authorService.deleteAuthor(id);
+    }
 }
