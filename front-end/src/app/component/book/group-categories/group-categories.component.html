@@ -23,33 +23,13 @@
 
               <div class="list-child ps-3">
                 <ul class="list-unstyled">
-                  <li>
+                  <li *ngFor="let category of categories">
                     <a
                       class="text-decoration-none"
-                      routerLink="/book-categories/Sách văn học"
-                      >Sách văn học</a
+                      [routerLink]="['/book-categories', category]"
                     >
-                  </li>
-                  <li>
-                    <a
-                      class="text-decoration-none"
-                      routerLink="/book-categories/Thiếu nhi"
-                      >Thiếu nhi</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="text-decoration-none"
-                      routerLink="/book-categories/Kinh tế"
-                      >Kinh tế</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="text-decoration-none"
-                      routerLink="/book-categories/Tâm lý - Kỹ năng"
-                      >Tâm lý/Kỹ năng</a
-                    >
+                      {{ category }}
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -260,33 +240,13 @@
 
                 <div class="list-child ps-3">
                   <ul class="list-unstyled">
-                    <li>
+                    <li *ngFor="let category of categories">
                       <a
                         class="text-decoration-none"
-                        routerLink="/book-categories/Sách văn học"
-                        >Sách văn học</a
+                        [routerLink]="['/book-categories', category]"
                       >
-                    </li>
-                    <li>
-                      <a
-                        class="text-decoration-none"
-                        routerLink="/book-categories/Thiếu nhi"
-                        >Thiếu nhi</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="text-decoration-none"
-                        routerLink="/book-categories/Kinh tế"
-                        >Kinh tế</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="text-decoration-none"
-                        routerLink="/book-categories/Tâm lý - Kỹ năng"
-                        >Tâm lý/Kỹ năng</a
-                      >
+                        {{ category }}
+                      </a>
                     </li>
                   </ul>
                 </div>

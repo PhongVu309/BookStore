@@ -2,8 +2,7 @@ package com.example.bookstore.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "products")
@@ -20,7 +19,7 @@ public class Product {
     private Integer rating;
     private String preview;
     private Integer discount;
-    private Integer category_id;
+    private Integer category_id; // Thay thế relationship cũ
     private Integer author_id;
     private Integer publisher_id;
 

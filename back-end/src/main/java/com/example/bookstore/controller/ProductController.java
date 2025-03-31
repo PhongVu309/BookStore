@@ -23,4 +23,26 @@ public class ProductController {
     public List<Product> getFlashSaleProducts() {
         return productRepository.findByDiscountGreaterThan(30);
     }
+
+    @GetMapping("/category/{categoryName}")
+    public List<Product> getProductsByCategory(@PathVariable String categoryName) {
+        return productRepository.findByCategory_Name(categoryName);
+    }
+
+    // Thêm các phương thức CRUD
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productRepository.save(product);
+    }
+
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+        product.setId(id);
+        return productRepository.save(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Integer id) {
+        productRepository.deleteById(id);
+    }
 }

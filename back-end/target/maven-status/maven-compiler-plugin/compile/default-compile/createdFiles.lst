@@ -1,3 +1,4 @@
+com\example\bookstore\config\CorsConfig.class
 com\example\bookstore\service\ProductService.class
 com\example\bookstore\repository\PublisherRepository.class
 com\example\bookstore\model\Product.class

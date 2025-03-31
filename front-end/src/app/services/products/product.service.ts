@@ -32,4 +32,21 @@ export class ProductService {
   getHighDiscountProducts(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/flash-sale`);
   }
+
+  addProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${product.id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
 }

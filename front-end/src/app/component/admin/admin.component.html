@@ -1,0 +1,202 @@
+<div class="admin-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <h2>Admin Dashboard</h2>
+    </div>
+    <nav>
+      <ul>
+        <li [class.active]="activeTab === 'dashboard'" (click)="setActiveTab('dashboard')">
+          <i class="fas fa-home"></i>
+          Dashboard
+        </li>
+        <li [class.active]="activeTab === 'products'" (click)="setActiveTab('products')">
+          <i class="fas fa-box"></i>
+          Quản lý sản phẩm
+        </li>
+        <li [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">
+          <i class="fas fa-list"></i>
+          Quản lý danh mục
+        </li>
+        <li [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
+          <i class="fas fa-shopping-cart"></i>
+          Quản lý đơn hàng
+        </li>
+        <li [class.active]="activeTab === 'authors'" (click)="setActiveTab('authors')">
+          <i class="fas fa-user-edit"></i>
+          Quản lý tác giả
+        </li>
+        <li [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+          <i class="fas fa-users"></i>
+          Quản lý tài khoản
+        </li><li [class.active]="activeTab === 'publisher'" (click)="setActiveTab('publisher')">
+          <i class="fas fa-users"></i>
+          Quản lý nhà xuất bản
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header>
+      <div class="header-content">
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm kiếm...">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="user-info">
+          <span>Admin</span>
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content">
+      <div [ngSwitch]="activeTab">
+        <div *ngSwitchCase="'dashboard'">
+          <h2>Dashboard</h2>
+          <!-- Dashboard content -->
+        </div>
+        <div *ngSwitchCase="'products'">
+          <div class="products-management">
+            <h2>Quản lý sản phẩm</h2>
+
+            <!-- Product Form -->
+            <form class="product-form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Tên sản phẩm</label>
+                  <input type="text" id="name" formControlName="name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Mô tả</label>
+                  <textarea id="description" formControlName="description" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="price">Giá</label>
+                  <input type="number" id="price" formControlName="price" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="original_price">Giá gốc</label>
+                  <input type="number" id="original_price" formControlName="original_price" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="image">URL Ảnh</label>
+                  <input type="text" id="image" formControlName="image" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="rating">Đánh giá</label>
+                  <input type="number" id="rating" formControlName="rating" class="form-control" min="1" max="5">
+                </div>
+
+                <div class="form-group">
+                  <label for="preview">Preview</label>
+                  <input type="text" id="preview" formControlName="preview" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="discount">Giảm giá (%)</label>
+                  <input type="number" id="discount" formControlName="discount" class="form-control" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                  <label for="category_id">Danh mục</label>
+                  <select id="category_id" formControlName="category_id" class="form-control">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                      {{category.name}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="author_id">Tác giả</label>
+                  <select id="author_id" formControlName="author_id" class="form-control">
+                    <option *ngFor="let author of authors" [value]="author.id">
+                      {{author.name}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="publisher_id">Nhà xuất bản</label>
+                  <select id="publisher_id" formControlName="publisher_id" class="form-control">
+                    <option *ngFor="let publisher of publishers" [value]="publisher.id">
+                      {{publisher.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">{{editMode ? 'Cập nhật' : 'Thêm mới'}}</button>
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">Hủy</button>
+              </div>
+            </form>
+
+            <!-- Products Table -->
+            <div class="products-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th style="width: 300px;">Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Giảm giá</th>
+                    <th>Danh mục</th>
+                    <th>Tác giả</th>
+                    <th>Nhà xuất bản</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of products">
+                    <td>{{product.id}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price | currency:'VND'}}</td>
+                    <td>{{product.discount}}%</td>
+                    <td>{{getCategoryName(product.category_id)}}</td>
+                    <td>{{getAuthorName(product.author_id)}}</td>
+                    <td>{{getPublisherName(product.publisher_id)}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-warning" (click)="editProduct(product)">Sửa</button>
+                      <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)" style="margin-left: 10px;">Xóa</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'categories'">
+          <h2>Quản lý danh mục</h2>
+
+        </div>
+        <div *ngSwitchCase="'orders'">
+          <h2>Quản lý đơn hàng</h2>
+          <!-- Orders management content -->
+        </div>
+        <div *ngSwitchCase="'authors'">
+          <h2>Quản lý tác giả</h2>
+          <!-- Authors management content -->
+        </div>
+        <div *ngSwitchCase="'users'">
+          <h2>Quản lý tài khoản</h2>
+          <!-- Users management content -->
+        </div>
+
+        <div *ngSwitchCase="'publisher'">
+          <h2>Quản lý nhà xuất bản</h2>
+          <!-- Users management content -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

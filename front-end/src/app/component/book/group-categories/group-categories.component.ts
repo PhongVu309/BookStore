@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Product, ProductService } from '../../../services/products/product.service';
+import { CategoryService } from '../../../services/category/category.service';
 
 @Component({
   selector: 'app-group-categories',
@@ -19,13 +20,20 @@ export class GroupCategoriesComponent implements OnInit {
   pages: (number | string)[] = [];
   allProducts: Product[] = [];
   displayedProducts: Product[] = [];
+  categories: string[] = []; // Mảng lưu danh sách danh mục
   sortOption: string = 'newest';
 
   @ViewChild('productContainer') productContainer!: ElementRef;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+
+    // Lấy danh sách sản phẩm
     this.productService.getProducts().subscribe((data) => {
       this.allProducts = data;
       this.totalPages = Math.ceil(this.allProducts.length / this.itemsPerPage);
