@@ -30,10 +30,6 @@
           <i class="fas fa-shopping-cart"></i>
           Quản lý đơn hàng
         </li>
-        <li [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
-          <i class="fas fa-users"></i>
-          Quản lý tài khoản
-        </li>
       </ul>
     </nav>
   </div>
@@ -306,11 +302,6 @@
           <h2>Quản lý đơn hàng</h2>
           <!-- Orders management content -->
         </div>
-        <div *ngSwitchCase="'users'">
-          <h2>Quản lý tài khoản</h2>
-          <!-- Users management content -->
-        </div>
-
       </div>
     </div>
   </div>

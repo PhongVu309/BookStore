@@ -6,6 +6,7 @@ import { ProductService, Product } from '../../services/products/product.service
 import { Author, AuthorService } from '../../services/author/author.service';
 import { PublisherService, Publisher } from '../../services/publisher/publisher.service';
 import { Category, CategoryService } from '../../services/category/category.service';
+import { RoleService, Role } from '../../services/role/role.service';
 
 @Component({
   selector: 'app-admin',
@@ -24,6 +25,7 @@ export class AdminComponent implements OnInit {
   categories: any[] = [];
   authors: any[] = [];
   publishers: any[] = [];
+  roles: Role[] = []; // Danh sách vai trò
   editMode: boolean = false;
   editingId: number | null = null;
   editingCategoryId: number | null = null;
@@ -35,7 +37,8 @@ export class AdminComponent implements OnInit {
     private productService: ProductService,
     private authorService: AuthorService,
     private publisherService: PublisherService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private roleService: RoleService
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -73,6 +76,7 @@ export class AdminComponent implements OnInit {
     this.loadAuthors();
     this.loadPublishers();
     this.loadCategories();
+    this.loadRoles();
   }
 
   loadProducts() {
@@ -107,6 +111,15 @@ export class AdminComponent implements OnInit {
         this.categories = data;
       },
       error: (error) => console.error('Error loading categories:', error)
+    });
+  }
+
+  loadRoles() {
+    this.roleService.getRoles().subscribe({
+      next: (data) => {
+        this.roles = data;
+      },
+      error: (error) => console.error('Error loading roles:', error)
     });
   }
 
@@ -181,6 +194,11 @@ export class AdminComponent implements OnInit {
   getPublisherName(id: number): string {
     const publisher = this.publishers.find(p => p.id === id);
     return publisher ? publisher.name : '';
+  }
+
+  getRoleName(id: number): string {
+    const role = this.roles.find(r => r.id === id);
+    return role ? role.name : '';
   }
 
   // Category methods
