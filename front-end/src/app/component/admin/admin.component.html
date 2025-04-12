@@ -299,8 +299,56 @@
           </div>
         </div>
         <div *ngSwitchCase="'orders'">
-          <h2>Quản lý đơn hàng</h2>
-          <!-- Orders management content -->
+          <div class="products-management">
+            <h2>Quản lý đơn hàng</h2>
+
+            <!-- Orders Table -->
+            <div class="products-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên khách hàng</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Tổng tiền</th>
+                    <th>Ghi chú</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of orders">
+                    <td>{{order.id}}</td>
+                    <td>{{order.name}}</td>
+                    <td>{{order.email}}</td>
+                    <td>{{order.phoneNumber}}</td>
+                    <td>{{order.address}}</td>
+                    <td>{{order.totalPrice | currency:'VND'}}</td>
+                    <td>{{order.note}}</td>
+                    <td>
+                      <select
+                        class="form-control form-control-sm"
+                        [(ngModel)]="order.orderStatus"
+                        (change)="updateOrderStatus(order, order.orderStatus)"
+                      >
+                        <option value="pending">Đang chờ xử lý</option>
+                        <option value="shipped">Đang giao hàng</option>
+                        <option value="delivered">Đã giao hàng</option>
+                        <option value="cancelled">Đã hủy</option>
+                      </select>
+                    </td>
+                    <td>{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">Xóa</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

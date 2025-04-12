@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProductService, Product } from '../../services/products/product.service';
 import { Author, AuthorService } from '../../services/author/author.service';
 import { PublisherService, Publisher } from '../../services/publisher/publisher.service';
 import { Category, CategoryService } from '../../services/category/category.service';
 import { RoleService, Role } from '../../services/role/role.service';
+import { OrderService, Order } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
@@ -26,6 +27,7 @@ export class AdminComponent implements OnInit {
   authors: any[] = [];
   publishers: any[] = [];
   roles: Role[] = []; // Danh sách vai trò
+  orders: Order[] = [];
   editMode: boolean = false;
   editingId: number | null = null;
   editingCategoryId: number | null = null;
@@ -38,7 +40,8 @@ export class AdminComponent implements OnInit {
     private authorService: AuthorService,
     private publisherService: PublisherService,
     private categoryService: CategoryService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private orderService: OrderService
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -77,6 +80,7 @@ export class AdminComponent implements OnInit {
     this.loadPublishers();
     this.loadCategories();
     this.loadRoles();
+    this.loadOrders();
   }
 
   loadProducts() {
@@ -120,6 +124,15 @@ export class AdminComponent implements OnInit {
         this.roles = data;
       },
       error: (error) => console.error('Error loading roles:', error)
+    });
+  }
+
+  loadOrders() {
+    this.orderService.getOrders().subscribe({
+      next: (data) => {
+        this.orders = data;
+      },
+      error: (error) => console.error('Error loading orders:', error)
     });
   }
 
@@ -343,5 +356,30 @@ export class AdminComponent implements OnInit {
         error: (error) => console.error('Error deleting publisher:', error)
       });
     }
+  }
+
+  updateOrderStatus(order: Order, newStatus: string) {
+    const updatedOrder = { ...order, orderStatus: newStatus };
+    this.orderService.updateOrder(updatedOrder).subscribe({
+      next: () => {
+        this.loadOrders();
+      },
+      error: (error) => console.error('Error updating order:', error)
+    });
+  }
+
+  deleteOrder(id: number) {
+    if (confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
+      this.orderService.deleteOrder(id).subscribe({
+          next: () => {
+              this.loadOrders(); // Reload sau khi xóa thành công
+              alert('Xóa đơn hàng thành công');
+          },
+          error: (error) => {
+              console.error('Error deleting order:', error);
+              alert('Không thể xóa đơn hàng. Vui lòng thử lại!');
+          }
+      });
+  }
   }
 }

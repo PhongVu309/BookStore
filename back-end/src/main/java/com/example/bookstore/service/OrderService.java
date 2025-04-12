@@ -32,6 +32,10 @@ public class OrderService {
     }
 
     public void deleteOrder(int id) {
-        orderRepository.deleteById(id);
+        try {
+            orderRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Không thể xóa đơn hàng: " + e.getMessage());
+        }
     }
 }

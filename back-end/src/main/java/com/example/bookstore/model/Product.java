@@ -2,7 +2,6 @@ package com.example.bookstore.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "products")
