@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Author {
   id: number;
@@ -33,5 +34,16 @@ export class AuthorService {
 
   deleteAuthor(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchAuthors(searchTerm: string): Observable<Author[]> {
+    if (!searchTerm.trim()) {
+      return of([]);
+    }
+    return this.getAuthors().pipe(
+      map(authors => authors.filter(author =>
+        author.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ))
+    );
   }
 }

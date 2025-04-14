@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Product, ProductService } from '../../../services/products/product.service';
-import { CategoryService } from '../../../services/category/category.service';
+import { CategoryService, Category } from '../../../services/category/category.service';
 
 @Component({
   selector: 'app-group-categories',
@@ -10,7 +10,7 @@ import { CategoryService } from '../../../services/category/category.service';
   imports: [RouterModule, CommonModule],
   templateUrl: './group-categories.component.html',
   styleUrl: './group-categories.component.css',
-  providers: [ProductService],
+  providers: [ProductService, CategoryService],
 })
 export class GroupCategoriesComponent implements OnInit {
   isFilterVisible: boolean = false;
@@ -20,20 +20,23 @@ export class GroupCategoriesComponent implements OnInit {
   pages: (number | string)[] = [];
   allProducts: Product[] = [];
   displayedProducts: Product[] = [];
-  categories: string[] = []; // Mảng lưu danh sách danh mục
+  categories: Category[] = [];
   sortOption: string = 'newest';
 
   @ViewChild('productContainer') productContainer!: ElementRef;
 
   constructor(
     private productService: ProductService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Load danh mục
+    this.loadCategories();
 
-    // Lấy danh sách sản phẩm
+    // Load sản phẩm
     this.productService.getProducts().subscribe((data) => {
       this.allProducts = data;
       this.totalPages = Math.ceil(this.allProducts.length / this.itemsPerPage);
@@ -130,6 +133,18 @@ export class GroupCategoriesComponent implements OnInit {
 
   scrollToTop(): void {
     this.productContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Thêm phương thức loadCategories
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+      }
+    });
   }
 }
 

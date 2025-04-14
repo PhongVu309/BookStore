@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Publisher {
   id: number;
@@ -33,5 +34,16 @@ export class PublisherService {
 
   deletePublisher(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchPublishers(searchTerm: string): Observable<Publisher[]> {
+    if (!searchTerm.trim()) {
+      return of([]);
+    }
+    return this.getPublishers().pipe(
+      map(publishers => publishers.filter(publisher =>
+        publisher.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ))
+    );
   }
 }

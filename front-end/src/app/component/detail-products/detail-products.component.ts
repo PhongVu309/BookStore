@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { ProductService, Product } from '../../services/products/product.service';
+import { PublisherService } from '../../services/publisher/publisher.service';
+import { AuthorService } from '../../services/author/author.service';
 
 @Component({
   selector: 'app-detail-products',
@@ -9,25 +12,58 @@ import { RouterModule } from '@angular/router';
   templateUrl: './detail-products.component.html',
   styleUrl: './detail-products.component.css'
 })
-export class DetailProductsComponent {
+export class DetailProductsComponent implements OnInit {
   quantity: number = 1;
-  product = {
-    title: 'Giải Mã Mê Cung - Phát Triển IQ - Đại Dương',
-    publisher: 'NXB Hà Nội',
-    author: 'Nhóm tác giả',
-    distributor: 'Đinh Tị',
-    price: 54600,
-    originalPrice: 70000,
-    description: [
-      `Xin Chào, Nỗi Sợ của Michelle Poler không phải là cuốn sách kỹ năng tuổi teen sẽ hướng dẫn bạn những cách để đừng sợ hãi nữa, mà là hãy can đảm lên, để bạn có thể trở thành một phiên bản xịn sò hơn của chính mình.`,
-      `Tác giả Michelle Poler của Xin Chào, Nỗi Sợ là người đã thực hiện #DựÁn100Ngày, trong đó cô đối mặt với 100 thử thách khiến mình sợ hãi như: Nhảy dù, khiêu vũ trên phố như thể không người, ăn côn trùng, triệt lông kiểu Brazil…`,
-      `Một trong những điều hay nhất của Xin Chào, Nỗi Sợ là nó không cố đập vỡ nỗi sợ hãi của bạn. Bởi chính tác giả Michelle Poler cũng đã thừa nhận rằng trước đây cô là một cô gái luôn sợ sệt, không dám bước qua vùng an toàn của mình...`,
-      `Bạn biết rằng mình có nhiều ước mơ hơn thế này, hoặc đơn giản chỉ là một danh sách những điều mới mẻ muốn thử, nhưng bạn không thực hiện chúng vì có quá nhiều e ngại?`
-    ]
-  };
+  product?: Product;
+  relatedProducts: Product[] = [];
+  author: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private productService: ProductService,
+    private publisherService: PublisherService,
+    private authorService: AuthorService
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.loadProduct(params['id']);
+      }
+    });
+  }
+
+  loadProduct(id: number) {
+    this.productService.getProductById(id).subscribe(product => {
+      this.product = product;
+      this.loadRelatedProducts(product.author_id);
+      if (product.author_id) {
+        this.authorService.getAuthorById(product.author_id).subscribe(author => {
+          this.author = author;
+        });
+      }
+    });
+  }
+
+  loadRelatedProducts(authorId: number) {
+    this.productService.getProducts().subscribe(products => {
+      this.relatedProducts = products
+        .filter(p => p.author_id === authorId && p.id !== this.product?.id)
+        .slice(0, 5);
+    });
+  }
 
   changeQuantity(amount: number): void {
     const newValue = this.quantity + amount;
     this.quantity = newValue < 1 ? 1 : newValue;
+  }
+
+  onSelectRelatedProduct(productId: number) {
+    this.router.navigate(['/detail-product', productId], {
+      replaceUrl: true
+    });
+    this.loadProduct(productId);
+    window.scrollTo(0, 0);
   }
 }

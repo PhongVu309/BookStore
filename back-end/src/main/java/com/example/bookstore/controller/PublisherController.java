@@ -32,4 +32,9 @@ public class PublisherController {
     public void deletePublisher(@PathVariable Long id) {
         publisherService.deletePublisher(id);
     }
+
+    @GetMapping("/{id}")
+    public Publisher getPublisherById(@PathVariable Long id) {
+        return publisherService.getPublisherById(id);
+    }
 }

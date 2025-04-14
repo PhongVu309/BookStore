@@ -38,10 +38,11 @@
                   Sách truyện <span><i class="fa-solid fa-caret-down"></i></span>
               </a>
               <ul class="list-unstyled collapse ms-3" id="subMenuSachTruyen">
-                  <li><a routerLink="/book-categories/Sách văn học" class="text-black text-decoration-none">Sách văn học</a></li>
-                  <li><a routerLink="/book-categories/Thiếu nhi" class="text-black text-decoration-none">Thiếu nhi</a></li>
-                  <li><a routerLink="/book-categories/Kinh tế" class="text-black text-decoration-none">Kinh tế</a></li>
-                  <li><a routerLink="/book-categories/Tâm lý - Kỹ năng" class="text-black text-decoration-none">Tâm lý/Kỹ năng</a></li>
+                  <li *ngFor="let category of categories | slice:0:8">
+                      <a [routerLink]="['/book-categories', category.name]" class="text-black text-decoration-none">
+                          {{category.name}}
+                      </a>
+                  </li>
               </ul>
             </li>
 
@@ -50,11 +51,11 @@
                     Tác giả <span><i class="fa-solid fa-caret-down"></i></span>
                 </a>
                 <ul class="list-unstyled collapse ms-3" id="subMenuTacGia">
-                    <li><a routerLink="/detail-author/Nam Cao" class="text-black text-decoration-none">Nam Cao</a></li>
-                    <li><a routerLink="/detail-author/Vũ Trọng Phụng" class="text-black text-decoration-none">Vũ Trọng Phụng</a></li>
-                    <li><a routerLink="/detail-author/Nguyễn Nhật Ánh" class="text-black text-decoration-none">Nguyễn Nhật Ánh</a></li>
-                    <li><a routerLink="/detail-author/Eiichiro Oda" class="text-black text-decoration-none">Eiichiro Oda</a></li>
-                    <li><a routerLink="/detail-author/Ryuu Shinohara" class="text-black text-decoration-none">Ryuu Shinohara</a></li>
+                    <li *ngFor="let author of authors | slice:0:8">
+                        <a [routerLink]="['/detail-author', author.name]" class="text-black text-decoration-none">
+                            {{author.name}}
+                        </a>
+                    </li>
                 </ul>
               </li>
 
@@ -63,9 +64,11 @@
                     Nhà xuất bản <span><i class="fa-solid fa-caret-down"></i></span>
                 </a>
                 <ul class="list-unstyled collapse ms-3" id="subMenuNhaXB">
-                    <li><a routerLink="/detail-publisher/Nhã Nam" class="text-black text-decoration-none">Nhã Nam</a></li>
-                    <li><a routerLink="/detail-publisher/Nông" class="text-black text-decoration-none">Nông</a></li>
-                    <li><a routerLink="/detail-publisher/Nguyễn" class="text-black text-decoration-none">Nguyễn</a></li>
+                    <li *ngFor="let publisher of publishers | slice:0:8">
+                        <a [routerLink]="['/detail-publisher', publisher.name]" class="text-black text-decoration-none">
+                            {{publisher.name}}
+                        </a>
+                    </li>
                 </ul>
               </li>
           </ul>

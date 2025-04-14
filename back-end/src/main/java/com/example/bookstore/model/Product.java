@@ -18,9 +18,21 @@ public class Product {
     private Integer rating;
     private String preview;
     private Integer discount;
-    private Integer category_id; // Thay thế relationship cũ
+    private Integer category_id;
     private Integer author_id;
     private Integer publisher_id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private Author author;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "publisher_id", insertable = false, updatable = false)
+    private Publisher publisher;
 
     // Getters và Setters
     public Integer getId() {
@@ -69,6 +81,7 @@ public class Product {
 
     public void setOriginal_price(BigDecimal original_price) {
         this.original_price = original_price;
+        calculateDiscountedPrice();
     }
 
     public Integer getRating() {
@@ -93,6 +106,7 @@ public class Product {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+        calculateDiscountedPrice();
     }
 
     public Integer getCategory_id() {
@@ -117,5 +131,30 @@ public class Product {
 
     public void setPublisher_id(Integer publisher_id) {
         this.publisher_id = publisher_id;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    private void calculateDiscountedPrice() {
+        if (this.original_price != null && this.discount != null) {
+            BigDecimal discountMultiplier = BigDecimal.ONE.subtract(
+                new BigDecimal(this.discount).divide(new BigDecimal(100)));
+            this.price = this.original_price.multiply(discountMultiplier)
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
+        }
     }
 }

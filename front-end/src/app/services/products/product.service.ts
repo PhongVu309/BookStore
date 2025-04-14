@@ -15,6 +15,14 @@ export interface Product {
   category_id: number;
   author_id: number;
   publisher_id: number;
+  author: {
+    id: number;
+    name: string;
+  };
+  publisher: {
+    id: number;
+    name: string;
+  };
 }
 
 @Injectable({
@@ -49,4 +57,13 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
+  getProductsByAuthorName(authorName: string): Observable<Product[]> {
+    const encodedAuthorName = encodeURIComponent(authorName);
+    return this.http.get<Product[]>(`${this.apiUrl}/author/${encodedAuthorName}`);
+  }
+
+  getProductsByPublisherName(publisherName: string): Observable<Product[]> {
+    const encodedPublisherName = encodeURIComponent(publisherName);
+    return this.http.get<Product[]>(`${this.apiUrl}/publisher/${encodedPublisherName}`);
+  }
 }

@@ -138,13 +138,13 @@
     <div class="row list-products" style="margin: 16px">
       <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of highDiscountProducts.slice(0, 6)">
         <div class="position-relative img-product">
-          <a routerLink="/detail-product">
+          <a routerLink="/detail-product/{{ product.id }}">
             <img [src]="product.image" class="img-fluid" alt="" />
           </a>
           <span class="position-absolute discount-product">{{ product.discount }}%</span>
         </div>
         <div class="infor-products">
-          <a href="" class="name-product">
+          <a routerLink="/detail-product/{{ product.id }}" class="name-product">
             <h6>{{ product.name }}</h6>
           </a>
           <p class="price" style="margin-top: 20px;">{{ product.price | currency:'VND' }}</p>
@@ -204,7 +204,7 @@
       <div class="row list-products" style="margin: 16px">
         <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of products.slice(0, 18)">
           <div class="position-relative img-product">
-            <a routerLink="/detail-product">
+            <a routerLink="/detail-product/{{ product.id }}">
               <img
                 [src]="product.image"
                 class="img-fluid"
@@ -214,7 +214,7 @@
             <span class="position-absolute discount-product">{{ product.discount }}%</span>
           </div>
           <div class="infor-products">
-            <a href="" class="name-product">
+            <a routerLink="/detail-product/{{ product.id }}" class="name-product">
               <h6>{{ product.name }}</h6>
             </a>
             <p class="price" style="margin-top: 20px;">{{ product.price | currency:'VND' }}</p>

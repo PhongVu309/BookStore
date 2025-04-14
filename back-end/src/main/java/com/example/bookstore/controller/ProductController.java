@@ -29,6 +29,21 @@ public class ProductController {
         return productRepository.findByCategory_Name(categoryName);
     }
 
+    @GetMapping("/author/{authorName}")
+    public List<Product> getProductsByAuthorName(@PathVariable String authorName) {
+        return productRepository.findByAuthor_Name(authorName);
+    }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Integer id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @GetMapping("/publisher/{publisherName}")
+    public List<Product> getProductsByPublisherName(@PathVariable String publisherName) {
+        return productRepository.findByPublisher_Name(publisherName);
+    }
+
     // Thêm các phương thức CRUD
     @PostMapping
     public Product createProduct(@RequestBody Product product) {

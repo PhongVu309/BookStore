@@ -46,7 +46,7 @@ export class AdminComponent implements OnInit {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
+      price: [{value: 0, disabled: true}], // Disabled vì giá sẽ tự động tính
       image: ['', Validators.required],
       original_price: [0, [Validators.required, Validators.min(0)]],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
@@ -55,6 +55,15 @@ export class AdminComponent implements OnInit {
       category_id: ['', Validators.required],
       author_id: ['', Validators.required],
       publisher_id: ['', Validators.required]
+    });
+
+    // Thêm listener để tự động tính giá
+    this.productForm.get('original_price')?.valueChanges.subscribe(() => {
+      this.calculatePrice();
+    });
+
+    this.productForm.get('discount')?.valueChanges.subscribe(() => {
+      this.calculatePrice();
     });
 
     this.categoryForm = this.fb.group({
@@ -138,7 +147,10 @@ export class AdminComponent implements OnInit {
 
   onSubmit() {
     if (this.productForm.valid) {
-      const productData = this.productForm.value;
+      const productData = {
+        ...this.productForm.getRawValue(), // Lấy cả giá trị của field disabled
+        price: this.productForm.get('price')?.value
+      };
 
       if (this.editMode && this.editingId) {
         productData.id = this.editingId;
@@ -381,5 +393,19 @@ export class AdminComponent implements OnInit {
           }
       });
   }
+  }
+
+  // Thêm phương thức tính giá
+  private calculatePrice() {
+    const originalPrice = this.productForm.get('original_price')?.value;
+    const discount = this.productForm.get('discount')?.value;
+
+    if (originalPrice && discount !== undefined) {
+      const discountMultiplier = (100 - discount) / 100;
+      const calculatedPrice = originalPrice * discountMultiplier;
+      this.productForm.patchValue({
+        price: calculatedPrice
+      }, { emitEvent: false });
+    }
   }
 }

@@ -3,10 +3,17 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/author">Tác giả</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ subDetail_publisher }}</li>
+        <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/search-publisher">Nhà xuất bản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ publisherName }}</li>
       </ol>
     </nav>
+  </div>
+
+  <!-- Thêm tiêu đề trang -->
+  <div class="container bg-white">
+    <div class="row p-3">
+      <h2>Sách của nhà xuất bản: {{ publisherName }}</h2>
+    </div>
   </div>
 
   <div class="container bg-white" #productContainer>
@@ -16,7 +23,7 @@
           <div class="d-none d-md-flex form-group mb-2 ml-4 me-2 position-relative">
             <label for="" class="me-2 d-lg-block d-none">Sắp xếp </label>
             <select name="sort" class="form-control form-control-sm w-auto" (change)="sortProducts($event)">
-            <option value="newest">Mới nhất </option>
+              <option value="newest">Mới nhất </option>
               <option value="price_asc">Giá thấp đến cao</option>
               <option value="price_desc">Giá cao đến thấp</option>
             </select>
@@ -27,28 +34,27 @@
     <hr class="m-0">
     <!-- Product List -->
     <div class="row list-products" style="margin: 16px">
-      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of products">
+      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of publisherProducts">
         <div class="position-relative img-product">
-          <a routerLink="/detail-product">
+          <a [routerLink]="['/detail-product', product.id]">
             <img
-              [src]="product.img"
+              [src]="product.image"
               class="img-fluid"
-              alt="{{ product.name }}"
+              [alt]="product.name"
             />
           </a>
-          <span class="position-absolute discount-product">{{ product.discount }}</span>
+          <span class="position-absolute discount-product">{{product.discount}}%</span>
         </div>
         <div class="infor-products">
-          <a href="" class="name-product">
-            <h6>{{ product.name }}</h6>
+          <a [routerLink]="['/detail-product', product.id]" class="name-product">
+            <h6>{{product.name}}</h6>
           </a>
-          <p class="price">{{ product.price | currency:'VND' }}</p>
-          <p><del>{{ product.originalPrice | currency:'VND' }}</del></p>
+          <p class="price">{{product.price | currency:'VND'}}</p>
+          <p><del>{{product.original_price | currency:'VND'}}</del></p>
           <p>
             <span class="star-rating" *ngFor="let star of [].constructor(product.rating)">
               <i class="fa-solid fa-star"></i>
             </span>
-            <span class="text-rating">({{ product.preview }})</span>
           </p>
         </div>
       </div>

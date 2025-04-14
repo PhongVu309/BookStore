@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb" style="margin: 0;">
         <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tác giả</li>
+        <li class="breadcrumb-item active" aria-current="page">Nhà xuất bản</li>
       </ol>
     </nav>
   </div>
@@ -11,9 +11,35 @@
   <div class="container content bg-white">
     <div class="row p-3">
       <div class="col-md-4 col-sm-6 col-12">
-        <div class="input-group">
-          <input type="text" class="form-control focus-ring focus-ring-warning ipt-author" placeholder="Nhập tên tác giả ...">
-          <button class="btn btn-search" type="button" routerLink="/detail-author">Tìm kiếm</button>
+        <div class="input-group position-relative">
+          <input
+            type="text"
+            class="form-control focus-ring focus-ring-warning ipt-author"
+            placeholder="Nhập tên nhà xuất bản ..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearchInput($event)"
+            (focus)="onFocus()"
+          >
+          <!-- Dropdown results -->
+          <div class="search-results" *ngIf="showDropdown">
+            <div class="loading" *ngIf="isLoading">
+              Đang tìm kiếm...
+            </div>
+
+            <div class="no-results" *ngIf="!isLoading && searchTerm && filteredPublishers.length === 0">
+              Không tìm thấy nhà xuất bản phù hợp
+            </div>
+
+            <div class="results-list" *ngIf="!isLoading && filteredPublishers.length > 0">
+              <div
+                class="result-item"
+                *ngFor="let publisher of filteredPublishers"
+                (click)="selectPublisher(publisher)"
+              >
+                {{ publisher.name }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

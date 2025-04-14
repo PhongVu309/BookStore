@@ -1,36 +1,36 @@
-<body class="container-fuild bg-light">
+<body class="container-fuild bg-light" *ngIf="product">
   <div class="container content bg-white">
     <div class="row group-detail">
       <div class="col-lg-5 d-flex justify-content-center image-products">
-        <img src="assets/img/home/flashsale/xin-chao-noi-so-1.jpg" alt="" />
+        <img [src]="product.image" [alt]="product.name" />
       </div>
 
       <div class="col-lg-7 group-decription">
         <div class="row title-product">
-          <h1>Giải Mã Mê Cung - Phát Triển IQ - Đại Dương</h1>
+          <h1>{{ product.name }}</h1>
         </div>
 
+        <!-- Phần thông tin nhà xuất bản và tác giả -->
         <div class="row d-flex justify-content-between">
           <div class="col-6 info-author">
             <label>Nhà xuất bản: </label>
-            <a href="/">NXB Hà Nội</a>
+            <a >NXB Hà Nội</a>
           </div>
 
           <div class="col-6 info-author">
             <label>Tác Giả: </label>
-            <a href="/">Nhóm tác giả</a>
+            <a [routerLink]="['/detail-author', author.name]">{{ product.author.name }}</a>
           </div>
-
           <div class="col-12 info-author">
-            <label>Nhà phát hành: </label>
-            <a href="">Đinh Tị</a>
+              <label>Nhà phát hành: </label>
+              <a [routerLink]="['/detail-author', author.name]">{{ product.publisher.name }}</a>
           </div>
         </div>
 
         <div class="row d-flex align-items-center">
           <div class="col-md-8 box-price">
-            <span class="price">54.600 đ</span>
-            <span><del>70.000đ</del></span>
+            <span class="price">{{ product.price | currency: 'VND' }}</span>
+            <span><del>{{ product.original_price | currency: 'VND' }}</del></span>
           </div>
         </div>
 
@@ -61,215 +61,44 @@
 
   <div class="container bg-white">
     <div class="group-info">
-      <h2 class="text-title">
-        Xin Chào, Nỗi Sợ của Michelle Poler không phải là cuốn sách kỹ năng tuổi
-        teen sẽ hướng dẫn bạn những cách để đừng sợ hãi nữa, mà là hãy can đảm
-        lên, để bạn có thể trở thành một phiên bản xịn sò hơn của chính mình.
-      </h2><br>
-      <p>
-        Tác giả Michelle Poler của Xin Chào, Nỗi Sợ là người đã thực hiện
-        #DựÁn100Ngày, trong đó cô đối mặt với 100 thử thách khiến mình sợ hãi như:
-        Nhảy dù, khiêu vũ trên phố như thể không người, ăn côn trùng, triệt lông
-        kiểu Brazil… Hành trình đó của Michelle Poler truyền cảm hứng bất ngờ và
-        cô ấy đã thực hiện cuốn sách này để gửi đi thông điệp: Hãy can đảm lên,
-        hãy phá chiếc kén an toàn thoải mái của chính mình, để trở thành phiên bản
-        xịn sò hơn.
-      </p><br>
-      <p>
-        Xin Chào, Nỗi Sợ không đề cập đến các vấn đề nào quá mới mẻ, thậm chí bạn
-        còn đã từng biết những điều mà Michelle Poler đề cập đến. Nhưng bạn vẫn sẽ
-        rất yêu thích cuốn sách này, bởi cách mà tác giả dẫn dắt các câu chuyện
-        của mình trẻ trung, đầy hứng khởi, như cách mà một người bạn đang trò
-        chuyện với bạn. Bạn cảm thấy thoải mái, dễ dàng lắng nghe, dễ dàng sẻ
-        chia, thậm chí bạn có thể phản bác ý kiến của cô ấy ngay bên dưới. Chính
-        vì thế, cuốn sách dần trở thành một phiên bản phù hợp hơn của riêng bạn.
-      </p><br>
-      <p>
-        Bên cạnh các chủ đề hay các câu chuyện được tác giả đề cập đến, Michelle
-        Poler còn để sẵn các bài tập để bạn “thực hành” về nội dung đã được thảo
-        thuận. Bạn có thể làm bài tập chăm chỉ, hoặc không, nhưng chắc chắn rằng
-        khi đã thực hiện hết một vòng cuốn sách và nhìn lại bạn sẽ thấy mình đã
-        khác biệt hơn so với lúc đầu đọc cuốn sách.
-      </p><br>
-      <p>
-        Một trong những điều hay nhất của Xin Chào, Nỗi Sợ là nó không cố đập vỡ
-        nỗi sợ hãi của bạn. Bởi chính tác giả Michelle Poler cũng đã thừa nhận
-        rằng trước đây cô là một cô gái luôn sợ sệt, không dám bước qua vùng an
-        toàn của mình, nay cô vẫn là một cô gái sợ sệt nhưng đã dám định nghĩa lại
-        các khái niệm về thất bại, bị từ chối, nỗi sợ hãi khó khăn, sự chỉ trích…
-        để trưởng thành. Thứ mà cuốn sách này sẽ đập vỡ chính là “vùng an toàn”
-        của bạn, và bù lại bằng lòng can đảm.
-      </p><br>
-      <p>
-        Bạn biết rằng mình có nhiều ước mơ hơn thế này, hoặc đơn giản chỉ là một
-        danh sách những điều mới mẻ muốn thử, nhưng bạn không thực hiện chúng vì
-        có quá nhiều e ngại? Bạn biết rằng mình muốn thành công hơn thế này, hoặc
-        đơn giản muốn được hài lòng hay vui vẻ hơn, nhưng bạn vẫn chấp nhận hiện
-        tại bởi bạn sợ sự thay đổi sẽ mang đến những tổn thương? Bạn muốn thay
-        đổi, nhưng cần một chút thúc đẩy? Vậy thì Xin Chào, Nỗi Sợ là cuốn sách
-        dành cho bạn.
-      </p><br>
-      <p>
-        Hãy phiêu lưu, sáng tạo, tham vọng và hơn hết, hãy là chính mình, với một
-        chút trợ giúp từ Xin Chào, Nỗi Sợ!
-      </p><br>
+      <h2 class="text-title">{{ product.name }}</h2><br>
+      <p>{{ product.description }}</p>
     </div>
   </div>
 
   <div class="container bg-white" style="margin-top: 16px; padding-top: 16px;">
     <div class="row newProduct-title title">
-      <h2 class="text-upcase">sản phẩm liên quan</h2>
+      <h2 class="text-upcase">sản phẩm cùng tác giả</h2>
     </div>
 
     <div class="row btn-view" style="margin-top: 24px">
       <hr class="m-0" />
     </div>
 
+    <!-- Phần sản phẩm liên quan -->
     <div class="row list-products" style="margin: 16px">
-      <div class="col item-products">
+      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let relatedProduct of relatedProducts">
         <div class="position-relative img-product">
-          <a routerLink="/detail-product">
-            <img
-              src="assets/img/home/flashsale/xin-chao-noi-so-1.jpg"
-              class="img-fluid"
-              alt=""
-            />
+          <a href="javascript:void(0)" (click)="onSelectRelatedProduct(relatedProduct.id)">
+            <img [src]="relatedProduct.image" class="img-fluid" [alt]="relatedProduct.name" />
           </a>
-          <span class="position-absolute discount-product">40%</span>
+          <span class="position-absolute discount-product">{{relatedProduct.discount}}%</span>
         </div>
         <div class="infor-products">
-          <a href="" class="name-product"
-            ><h6>Xin Chào, Nỗi Sợ (Hello, Fears)</h6></a
-          >
-          <p class="price">72,000</p>
-          <p><del>120,000</del></p>
-          <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">(79)</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="col item-products">
-        <div class="position-relative img-product">
-          <a href="">
-            <img
-              src="assets/img/home/flashsale/dung-thach-toi-1.jpg"
-              class="img-fluid"
-              alt=""
-            />
+          <a href="javascript:void(0)"
+             (click)="onSelectRelatedProduct(relatedProduct.id)"
+             class="name-product">
+            <h6>{{relatedProduct.name}}</h6>
           </a>
-          <span class="position-absolute discount-product">40%</span>
-        </div>
-        <div class="infor-products">
-          <a href="" class="name-product"
-            ><h6>Xin Chào, Nỗi Sợ (Hello, Fears)</h6></a
-          >
-          <p class="price">72,000</p>
-          <p><del>120,000</del></p>
-          <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">(79)</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="col d-none d-sm-block item-products">
-        <div class="position-relative img-product">
-          <a href="">
-            <img
-              src="assets/img/home/flashsale/dung-thach-toi-1.jpg"
-              class="img-fluid"
-              alt=""
-            />
-          </a>
-          <span class="position-absolute discount-product">40%</span>
-        </div>
-        <div class="infor-products">
-          <a href="" class="name-product"
-            ><h6>Xin Chào, Nỗi Sợ (Hello, Fears)</h6></a
-          >
-          <p class="price">72,000</p>
-          <p><del>120,000</del></p>
-          <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">(79)</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="col d-none d-md-block item-products">
-        <div class="position-relative img-product">
-          <a href="">
-            <img
-              src="assets/img/home/flashsale/toa-sang-shine.jpg"
-              class="img-fluid"
-              alt=""
-            />
-          </a>
-          <span class="position-absolute discount-product">40%</span>
-        </div>
-        <div class="infor-products">
-          <a href="" class="name-product"
-            ><h6>Xin Chào, Nỗi Sợ (Hello, Fears)</h6></a
-          >
-          <p class="price">72,000</p>
-          <p><del>120,000</del></p>
-          <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">(79)</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="col d-none d-lg-block item-products">
-        <div class="position-relative img-product">
-          <a href="">
-            <img
-              src="assets/img/home/flashsale/toa-sang-shine.jpg"
-              class="img-fluid"
-              alt=""
-            />
-          </a>
-          <span class="position-absolute discount-product">40%</span>
-        </div>
-        <div class="infor-products">
-          <a href="" class="name-product"
-            ><h6>Xin Chào, Nỗi Sợ (Hello, Fears)</h6></a
-          >
-          <p class="price">72,000</p>
-          <p><del>120,000</del></p>
-          <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">(79)</span>
-          </p>
+          <p class="price">{{relatedProduct.price | currency:'VND'}}</p>
+          <p><del>{{relatedProduct.original_price | currency:'VND'}}</del></p>
         </div>
       </div>
     </div>
 
     <div class="row btn-view">
       <div class="col d-flex justify-content-center align-items-center" style="margin-bottom: 16px;">
-        <button class="btn-see-more">Xem thêm</button>
+        <button [routerLink]="['/detail-author', author.name]" class="btn-see-more">Xem thêm</button>
       </div>
     </div>
   </div>

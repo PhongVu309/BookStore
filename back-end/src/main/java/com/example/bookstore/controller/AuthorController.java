@@ -24,12 +24,19 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
+    public Author updateAuthor(@PathVariable Integer id, @RequestBody Author author) {
         return authorService.updateAuthor(id, author);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAuthor(@PathVariable Long id) {
+    public void deleteAuthor(@PathVariable Integer id) {
         authorService.deleteAuthor(id);
     }
+
+    @GetMapping("/{id}")
+    public Author getAuthorById(@PathVariable Integer id) {
+        return authorService.getAuthorById(id);
+    }
+
+
 }

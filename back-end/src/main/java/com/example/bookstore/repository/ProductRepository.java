@@ -10,8 +10,13 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByDiscountGreaterThan(Integer discount);
-    // Sửa method để sử dụng join thay vì direct relationship
     @Query("SELECT p FROM Product p JOIN Category c ON p.category_id = c.id WHERE c.name = :categoryName")
     List<Product> findByCategory_Name(@Param("categoryName") String categoryName);
+
+    @Query("SELECT p FROM Product p JOIN p.author a WHERE a.name = :authorName")
+    List<Product> findByAuthor_Name(@Param("authorName") String authorName);
+
+    @Query("SELECT p FROM Product p JOIN Publisher pu ON p.publisher_id = pu.id WHERE pu.name = :publisherName")
+    List<Product> findByPublisher_Name(@Param("publisherName") String publisherName);
 }
 
