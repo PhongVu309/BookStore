@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByDiscountGreaterThan(Integer discount);
+    List<Product> findByNameContainingIgnoreCase(String keyword);
+    
     @Query("SELECT p FROM Product p JOIN Category c ON p.category_id = c.id WHERE c.name = :categoryName")
     List<Product> findByCategory_Name(@Param("categoryName") String categoryName);
 
@@ -18,5 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p JOIN Publisher pu ON p.publisher_id = pu.id WHERE pu.name = :publisherName")
     List<Product> findByPublisher_Name(@Param("publisherName") String publisherName);
+    
 }
 

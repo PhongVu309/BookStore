@@ -1,434 +1,69 @@
-<body class="container-fuild bg-light ">
-  <div class="container ">
+<body class="container-fuild bg-light">
+  <div class="container py-3" #productContainer>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/">Trang chủ</a></li>
         <li class="breadcrumb-item"><a class="text-decoration-none" routerLink="/group-categories">Sách truyện</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ subCategory }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ categoryName }}</li>
       </ol>
     </nav>
   </div>
 
   <div class="container bg-white">
-    <div class="row" #productContainer>
-      <div class="d-none d-lg-block col-lg-3">
-        <!-- filter screen desktop -->
-        <div class="row pr-lg-3">
-          <div class="w-100">
-            <div class="p-2 nav-filter">
-              <div class="nav-filter-item">
-                <h4 class="text-upcase">Giá</h4>
-                <form action="">
-                  <ul class="ps-3 list-unstyled">
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="0-10000"
-                      />
-                      <label for="">0-10000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="10000-20000"
-                      />
-                      <label for="">10000-20000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="20000-30000 đ"
-                      />
-                      <label for="">20000-30000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="30000-50000"
-                      />
-                      <label for="">30000-50000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="50000-70000"
-                      />
-                      <label for="">50000-70000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="70000-100000"
-                      />
-                      <label for="">70000-100000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="100000-150000"
-                      />
-                      <label for="">100000-150000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="lớn hơn 150000"
-                      />
-                      <label for="">Lớn hơn 150000 đ</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        class="me-2"
-                        name="price"
-                        value="none"
-                      />
-                      <label for="">None</label>
-                    </li>
-                  </ul>
-                </form>
-              </div>
+    <div class="row p-3">
+      <h2>Sách thuộc danh mục: {{ categoryName }}</h2>
+    </div>
+  </div>
 
-              <hr class="m-0" />
-              <div class="p-2 nav-filter-item">
-                <h4 class="text-upcase">độ tuổi</h4>
-
-                <form action="">
-                  <ul class="ps-3 list-unstyled">
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="0-5"
-                      /><label for="">Từ 0 - 5 tuổi</label>
-                    </li>
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="6-10"
-                      /><label for="">Từ 6 - 10 tuổi</label>
-                    </li>
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="10-15"
-                      /><label for="">Từ 10 - 15 tuổi</label>
-                    </li>
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="16-0"
-                      /><label for="">Từ 16 tuổi trở lên</label>
-                    </li>
-                  </ul>
-                </form>
-              </div>
-
-              <hr class="m-0" />
-              <div class="p-2 nav-filter-item">
-                <h4 class="text-upcase">chất liệu</h4>
-
-                <form action="">
-                  <ul class="ps-3 list-unstyled">
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="0-5"
-                      /><label for="">Bìa mềm</label>
-                    </li>
-                    <li>
-                      <input
-                        type="checkbox"
-                        class="me-2"
-                        name="nhomtuoi"
-                        value="6-10"
-                      /><label for="">bìa cứng</label>
-                    </li>
-                  </ul>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- end -->
-      </div>
-
-      <div class="d-block d-lg-none col-12">
-        <div class="row pr-lg-3">
-          <div class="bg-white w-100 pt-2" #productContainer>
-            <div class="d-flex justify-content-start" >
-              <div class="filter">
-                <span
-                  class="icon-filter btn btn-warning ms-3 me-1"
-                  (click)="toggleFilter()"
-                >
-                  <i class="fa-solid fa-filter"></i>
-                </span>
-              </div>
-
-              <div class="filter d-block d-lg-none">
-                <form action="" class="form-inline">
-                  <div class="form-group mb-2 me-2">
-                    <label for="" class="me-2 d-none d-lg-block">Sắp xếp</label>
-                    <select
-                      name="sort"
-                      id=""
-                      class="form-control form-control-sm"
-                      (change)="sortProducts($event)"
-                      >
-                      <option value="newest">Mới nhất</option>
-                      <option value="price_asc">Giá thấp đến cao</option>
-                      <option value="price_desc">Giá cao đến thấp</option>
-                    </select>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <!-- filter screen small -->
-            <div class="filter-toggle p-2 sub-page-nav" *ngIf="isFilterVisible">
-              <div class="p-2 nav-filter">
-                <div class="nav-filter-item">
-                  <h4 class="text-upcase">Giá</h4>
-                  <form action="">
-                    <ul class="ps-3 list-unstyled">
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="0-10000"
-                        />
-                        <label for="">0-10000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="10000-20000"
-                        />
-                        <label for="">10000-20000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="20000-30000 đ"
-                        />
-                        <label for="">20000-30000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="30000-50000"
-                        />
-                        <label for="">30000-50000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="50000-70000"
-                        />
-                        <label for="">50000-70000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="70000-100000"
-                        />
-                        <label for="">70000-100000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="100000-150000"
-                        />
-                        <label for="">100000-150000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="lớn hơn 150000"
-                        />
-                        <label for="">Lớn hơn 150000 đ</label>
-                      </li>
-                      <li>
-                        <input
-                          type="radio"
-                          class="me-2"
-                          name="price"
-                          value="none"
-                        />
-                        <label for="">None</label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-
-                <hr class="m-0" />
-                <div class="p-2 nav-filter-item">
-                  <h4 class="text-upcase">độ tuổi</h4>
-
-                  <form action="">
-                    <ul class="ps-3 list-unstyled">
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="0-5"
-                        /><label for="">Từ 0 - 5 tuổi</label>
-                      </li>
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="6-10"
-                        /><label for="">Từ 6 - 10 tuổi</label>
-                      </li>
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="10-15"
-                        /><label for="">Từ 10 - 15 tuổi</label>
-                      </li>
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="16-0"
-                        /><label for="">Từ 16 tuổi trở lên</label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-
-                <hr class="m-0" />
-                <div class="p-2 nav-filter-item">
-                  <h4 class="text-upcase">chất liệu</h4>
-
-                  <form action="">
-                    <ul class="ps-3 list-unstyled">
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="0-5"
-                        /><label for="">Bìa mềm</label>
-                      </li>
-                      <li>
-                        <input
-                          type="checkbox"
-                          class="me-2"
-                          name="nhomtuoi"
-                          value="6-10"
-                        /><label for="">bìa cứng</label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- end -->
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-9">
-        <div class="form-filter mt-3 d-none d-lg-block">
-          <form action="" class="form-inline">
-            <div class="d-none d-md-flex form-group mb-2 ml-4 me-2 position-relative">
-              <label for="" class="me-2 d-none d-lg-block">Sắp xếp </label>
-              <select name="sort" class="form-control form-control-sm w-auto" (change)="sortProducts($event)">
+  <div class="container bg-white">
+    <div class="row p-3">
+      <div class="form-filter">
+        <form action="" class="form-inline">
+          <div class="d-none d-md-flex form-group mb-2 ml-4 me-2 position-relative">
+            <label for="" class="me-2 d-lg-block d-none">Sắp xếp </label>
+            <select name="sort" class="form-control form-control-sm w-auto" (change)="sortProducts($event)">
               <option value="newest">Mới nhất </option>
-                <option value="price_asc">Giá thấp đến cao</option>
-                <option value="price_desc">Giá cao đến thấp</option>
-              </select>
-            </div>
-          </form>
-        </div>
-        <div class="row list-products" style="margin: 16px">
-          <div class="col-6 col-sm-6 col-md-4 col-lg-3 item-products" *ngFor="let product of products">
-            <div class="position-relative img-product">
-              <a routerLink="/detail-product">
-                <img
-                  [src]="product.img"
-                  class="img-fluid"
-                  alt="{{ product.name }}"
-                />
-              </a>
-              <span class="position-absolute discount-product">{{ product.discount }}</span>
-            </div>
-            <div class="infor-products">
-              <a href="" class="name-product">
-                <h6>{{ product.name }}</h6>
-              </a>
-              <p class="price">{{ product.price | currency:'VND' }}</p>
-              <p><del>{{ product.originalPrice | currency:'VND' }}</del></p>
-              <p>
-                <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-                <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-                <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-                <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-                <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-                <span class="text-rating">({{ product.rating }})</span>
-              </p>
-            </div>
+              <option value="price_asc">Giá thấp đến cao</option>
+              <option value="price_desc">Giá cao đến thấp</option>
+            </select>
           </div>
+        </form>
+      </div>
+    </div>
+    <hr class="m-0">
+
+    <!-- Product List -->
+    <div class="row list-products" style="margin: 16px">
+      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of categoryProducts">
+        <div class="position-relative img-product">
+          <a [routerLink]="['/detail-product', product.id]">
+            <img [src]="product.image" class="img-fluid" [alt]="product.name"/>
+          </a>
+          <span class="position-absolute discount-product">{{product.discount}}%</span>
         </div>
-        <!-- Pagination Controls -->
-        <div class="pagination-controls py-3">
-          <button class="btn" *ngIf="currentPage > 1" (click)="previousPage()" [disabled]="currentPage === 1">Trước</button>
-          <ng-container *ngFor="let page of pages">
-            <button class="btn" *ngIf="page !== '...'" (click)="goToPage(+page)" [class.active]="page === currentPage">{{ page }}</button>
-            <span *ngIf="page === '...'">{{ page }}</span>
-          </ng-container>
-          <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Sau</button>
+        <div class="infor-products">
+          <a [routerLink]="['/detail-product', product.id]" class="name-product">
+            <h6>{{product.name}}</h6>
+          </a>
+          <p class="price">{{product.price | currency:'VND'}}</p>
+          <p><del>{{product.original_price | currency:'VND'}}</del></p>
+          <p>
+            <span class="star-rating" *ngFor="let star of [].constructor(product.rating)">
+              <i class="fa-solid fa-star"></i>
+            </span>
+          </p>
         </div>
       </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls py-3">
+      <button class="btn" *ngIf="currentPage > 1" (click)="previousPage()" [disabled]="currentPage === 1">Trước</button>
+      <ng-container *ngFor="let page of pages">
+        <button class="btn" *ngIf="page !== '...'" (click)="goToPage(+page)" [class.active]="page === currentPage">{{ page }}</button>
+        <span *ngIf="page === '...'">{{ page }}</span>
+      </ng-container>
+      <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Sau</button>
     </div>
   </div>
 </body>

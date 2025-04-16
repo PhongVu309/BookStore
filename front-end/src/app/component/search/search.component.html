@@ -1,21 +1,21 @@
 <body class="container-fuild bg-light pt-3">
-  <div class="container pb-3">
+  <div class="container pb-3" #productContainer>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb" style="margin: 0;">
         <li class="breadcrumb-item"><a routerLink="/" class="text-decoration-none">Trang chủ</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Tìm kiếm: </li>
+        <li class="breadcrumb-item active" aria-current="page">Tìm kiếm: {{ searchKeyword }}</li>
       </ol>
     </nav>
   </div>
 
-  <div class="container bg-white" #productContainer>
+  <div class="container bg-white">
     <div class="row p-3">
       <div class="form-filter">
         <form action="" class="form-inline">
           <div class="d-none d-md-flex form-group mb-2 ml-4 me-2 position-relative">
             <label for="" class="me-2 d-lg-block d-none">Sắp xếp </label>
             <select name="sort" class="form-control form-control-sm w-auto" (change)="sortProducts($event)">
-            <option value="newest">Mới nhất </option>
+              <option value="newest">Mới nhất </option>
               <option value="price_asc">Giá thấp đến cao</option>
               <option value="price_desc">Giá cao đến thấp</option>
             </select>
@@ -24,41 +24,42 @@
       </div>
     </div>
     <hr class="m-0">
+
     <!-- Product List -->
     <div class="row list-products" style="margin: 16px">
-      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of products">
+      <div class="col-6 col-sm-6 col-md-4 col-lg-2 item-products" *ngFor="let product of displayedProducts">
         <div class="position-relative img-product">
-          <a routerLink="/detail-product">
-            <img
-              [src]="product.img"
-              class="img-fluid"
-              alt="{{ product.name }}"
-            />
+          <a [routerLink]="['/detail-product', product.id]">
+            <img [src]="product.image" class="img-fluid" [alt]="product.name"/>
           </a>
-          <span class="position-absolute discount-product">{{ product.discount }}</span>
+          <span class="position-absolute discount-product">{{product.discount}}%</span>
         </div>
         <div class="infor-products">
-          <a href="" class="name-product">
-            <h6>{{ product.name }}</h6>
+          <a [routerLink]="['/detail-product', product.id]" class="name-product">
+            <h6>{{product.name}}</h6>
           </a>
-          <p class="price">{{ product.price | currency:'VND' }}</p>
-          <p><del>{{ product.originalPrice | currency:'VND' }}</del></p>
+          <p class="price">{{product.price | currency:'VND'}}</p>
+          <p><del>{{product.original_price | currency:'VND'}}</del></p>
           <p>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="star-rating"><i class="fa-solid fa-star"></i></span>
-            <span class="text-rating">({{ product.rating }})</span>
+            <span class="star-rating" *ngFor="let star of [].constructor(product.rating)">
+              <i class="fa-solid fa-star"></i>
+            </span>
           </p>
         </div>
       </div>
     </div>
+
+    <!-- No Results Message -->
+    <div class="no-results text-center py-5" *ngIf="allProducts.length === 0">
+      <h4>Không tìm thấy sản phẩm nào phù hợp với từ khóa "{{ searchKeyword }}"</h4>
+    </div>
+
     <!-- Pagination Controls -->
-    <div class="pagination-controls py-3">
+    <div class="pagination-controls py-3" *ngIf="allProducts.length > 0">
       <button class="btn" *ngIf="currentPage > 1" (click)="previousPage()" [disabled]="currentPage === 1">Trước</button>
       <ng-container *ngFor="let page of pages">
-        <button class="btn" *ngIf="page !== '...'" (click)="goToPage(+page)" [class.active]="page === currentPage">{{ page }}</button>
+        <button class="btn" *ngIf="page !== '...'" (click)="goToPage(+page)"
+          [class.active]="page === currentPage">{{ page }}</button>
         <span *ngIf="page === '...'">{{ page }}</span>
       </ng-container>
       <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Sau</button>

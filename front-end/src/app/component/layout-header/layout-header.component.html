@@ -80,10 +80,41 @@
     </div>
 
     <div class="group-search">
-      <input type="text" class="search focus-ring focus-ring-warning" placeholder="" />
-      <button class="btn-search" routerLink="/search">
-        <i class="fas fa-search"></i>
-      </button>
+      <div class="position-relative w-100">
+        <input
+          type="text"
+          class="search focus-ring focus-ring-warning"
+          placeholder="Tìm kiếm sản phẩm..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchInput($event)"
+          (keyup.enter)="onSearch()"
+          (focus)="onFocus()"
+        />
+        <button class="btn-search" (click)="onSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+
+        <!-- Dropdown suggestions -->
+        <div class="search-results" *ngIf="showDropdown">
+          <div class="loading" *ngIf="isLoading">
+            <i class="fas fa-spinner fa-spin"></i> Đang tìm kiếm...
+          </div>
+
+          <div class="no-results" *ngIf="!isLoading && searchTerm && filteredProducts.length === 0">
+            Không tìm thấy sản phẩm phù hợp
+          </div>
+
+          <div class="results-list" *ngIf="!isLoading && filteredProducts.length > 0">
+            <div class="result-item" *ngFor="let product of filteredProducts"
+                 (click)="onSelectProduct(product.id)">
+              {{product.name}}
+            </div>
+            <div class="view-all" *ngIf="filteredProducts.length === 5" (click)="onSearch()">
+              Xem tất cả kết quả
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="group-icon d-flex">
@@ -103,7 +134,6 @@
       </div>
     </div>
   </div>
-
 
   <!--  -->
 </div>

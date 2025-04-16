@@ -44,6 +44,11 @@ public class ProductController {
         return productRepository.findByPublisher_Name(publisherName);
     }
 
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String keyword) {
+        return productRepository.findByNameContainingIgnoreCase(keyword.toLowerCase());
+    }
+
     // Thêm các phương thức CRUD
     @PostMapping
     public Product createProduct(@RequestBody Product product) {

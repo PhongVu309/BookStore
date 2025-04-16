@@ -66,4 +66,14 @@ export class ProductService {
     const encodedPublisherName = encodeURIComponent(publisherName);
     return this.http.get<Product[]>(`${this.apiUrl}/publisher/${encodedPublisherName}`);
   }
+
+  getProductsByCategoryName(categoryName: string): Observable<Product[]> {
+    const encodedCategoryName = encodeURIComponent(categoryName);
+    return this.http.get<Product[]>(`${this.apiUrl}/category/${encodedCategoryName}`);
+  }
+
+  searchProducts(keyword: string): Observable<Product[]> {
+    const encodedKeyword = encodeURIComponent(keyword);
+    return this.http.get<Product[]>(`${this.apiUrl}/search?keyword=${encodedKeyword}`);
+  }
 }

@@ -50,7 +50,7 @@ export class DetailProductsComponent implements OnInit {
     this.productService.getProducts().subscribe(products => {
       this.relatedProducts = products
         .filter(p => p.author_id === authorId && p.id !== this.product?.id)
-        .slice(0, 5);
+        .slice(0, 6);
     });
   }
 
