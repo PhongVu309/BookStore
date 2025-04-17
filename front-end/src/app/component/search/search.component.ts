@@ -27,7 +27,6 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Lắng nghe thay đổi của query params
     this.route.queryParams.subscribe(params => {
       this.searchKeyword = params['keyword'] || '';
       if (this.searchKeyword) {

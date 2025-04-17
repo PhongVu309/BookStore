@@ -8,6 +8,7 @@ import { PublisherService, Publisher } from '../../services/publisher/publisher.
 import { ProductService, Product } from '../../services/products/product.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { cartService } from '../../services/cart/cart-service.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -24,6 +25,7 @@ export class LayoutHeaderComponent implements OnInit {
   filteredProducts: Product[] = [];
   isLoading: boolean = false;
   showDropdown: boolean = false;
+  cartItemCount: number = 0;
   private searchSubject = new Subject<string>();
 
   constructor(
@@ -31,8 +33,13 @@ export class LayoutHeaderComponent implements OnInit {
     private authorService: AuthorService,
     private publisherService: PublisherService,
     private productService: ProductService,
+    private cartService: cartService,
     private router: Router
-  ) {}
+  ) {
+    this.cartService.getCart().subscribe(items => {
+      this.cartItemCount = this.cartService.getItemCount();
+    });
+  }
 
   ngOnInit() {
     this.loadCategories();

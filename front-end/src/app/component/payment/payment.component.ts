@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CartItem, cartService } from '../../services/cart/cart-service.service';
 
 @Component({
   selector: 'app-payment',
@@ -19,8 +20,12 @@ export class PaymentComponent implements OnInit {
   provinces: any[] = [];
   districts: any[] = [];
   wards: any[] = [];
+  cartItems: CartItem[] = [];
+  total: number = 0;
 
-  constructor() {
+  constructor(
+    private cartService: cartService
+  ) {
     this.locationForm = this.fb.group({
       province: [''],
       district: [''],
@@ -30,6 +35,12 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit() {
     this.loadProvinces();
+
+    // Lấy thông tin giỏ hàng
+    this.cartService.getCart().subscribe(items => {
+      this.cartItems = items;
+      this.total = this.cartService.getTotal();
+    });
   }
 
   loadProvinces() {

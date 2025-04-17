@@ -25,3 +25,16 @@ label {
 .text-price {
   color: #17a2b8;
 }
+
+.cart-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.ellipsis-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0.5rem;
+}

@@ -127,37 +127,37 @@
         <div class="py-3" style="padding-right: 1rem">
           <h5>Giỏ hàng</h5>
           <div class="cart-detail">
-            <div class="row cart-item mb-3">
+            <div class="row cart-item mb-3" *ngFor="let item of cartItems">
               <div class="col-2 col-sm-3 d-none d-sm-block">
-                <img
-                  src="assets/img/cart/item-cart.jpg"
-                  alt=""
-                  class="img-fluid"
-                />
+                <img [src]="item.product.image" [alt]="item.product.name"
+                     class="img-fluid" style="height: auto !important;">
               </div>
 
               <div class="col-8 col-sm-7">
                 <p class="text-sm ellipsis-text">
-                  <a
-                    routerLink="/detail-product"
-                    class="text-decoration-none text-dark"
-                    >Bộ Sách Khoa Học Bỏ Túi (5 Cuốn)</a
-                  >
+                  <a [routerLink]="['/detail-product', item.product.id]"
+                     class="text-decoration-none text-dark">
+                    {{item.product.name}}
+                  </a>
                 </p>
-                <p class="text-sm text-price mt-0">94.500đ x 1</p>
+                <p class="text-sm text-price mt-0">
+                  {{item.product.price | currency:'VND'}} x {{item.quantity}}
+                </p>
               </div>
 
               <div class="col-4 col-sm-2">
-                <p class="text-sm text-danger text-end">94.500đ</p>
+                <p class="text-sm text-danger text-end">
+                  {{item.product.price * item.quantity | currency:'VND'}}
+                </p>
               </div>
             </div>
-            <hr class="mt-0" />
+            <hr class="mt-0">
 
             <div class="row">
               <div class="col-8 offset-4 text-end">
                 <p>
                   Tổng tiền:
-                  <strong class="text-danger">94.500đ</strong>
+                  <strong class="text-danger">{{total | currency:'VND'}}</strong>
                 </p>
               </div>
             </div>

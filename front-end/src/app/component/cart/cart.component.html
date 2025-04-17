@@ -12,84 +12,38 @@
       <div class="row">
         <div class="col-12 col-md-8 cart-view">
           <div class="cart-view-content">
-            <div class="row cart-items">
+            <div class="row cart-items" *ngFor="let item of cartItems">
               <div class="col-3 col-md-2">
-                <img src="assets/img/cart/item-cart.jpg" class="img-fluid" alt="" style="width: 120px;">
+                <img [src]="item.product.image" class="img-fluid" [alt]="item.product.name" style="height: auto !important;">
               </div>
 
               <div class="col-6 col-md-8">
-                <a routerLink="/detail-product" class="text-decoration-none title-product">Bộ Sách Khoa Học Bỏ Túi (5 Cuốn)</a>
+                <a [routerLink]="['/detail-product', item.product.id]" class="text-decoration-none title-product">
+                  {{item.product.name}}
+                </a>
                 <div class="fw-bold">
-                  94.500 đ
-                  <p class="fw-normal old-price"><del>135.000</del></p>
+                  {{item.product.price | currency:'VND'}}
+                  <p class="fw-normal old-price">
+                    <del>{{item.product.original_price | currency:'VND'}}</del>
+                  </p>
                 </div>
 
                 <div class="d-flex align-items-center">
                   <div class="input-group quantity-selector">
-                    <button class="btn btn-decrease" type="button" (click)="decreaseQuantity()">−</button>
-                    <input type="text" class="form-control text-center fw-bold" [(ngModel)]="quantity" readonly>
-                    <button class="btn btn-increase" type="button" (click)="increaseQuantity()">+</button>
+                    <button class="btn btn-decrease" type="button" (click)="updateQuantity(item, -1)">−</button>
+                    <input type="text" class="form-control text-center fw-bold" [value]="item.quantity" readonly>
+                    <button class="btn btn-increase" type="button" (click)="updateQuantity(item, 1)">+</button>
                   </div>
-                  <button class="btn-trash"><i class="fa-solid fa-trash"></i></button>
+                  <button class="btn-trash" (click)="removeItem(item.product.id)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
                 </div>
               </div>
 
               <div class="col-3 col-md-2">
-                <span class="text-danger fw-bold">94.500 đ</span>
-              </div>
-            </div>
-
-            <div class="row cart-items">
-              <div class="col-3 col-md-2">
-                <img src="assets/img/cart/item-cart.jpg" class="img-fluid" alt="" style="width: 120px;">
-              </div>
-
-              <div class="col-6 col-md-8">
-                <a routerLink="/detail-product" class="text-decoration-none title-product">Bộ Sách Khoa Học Bỏ Túi (5 Cuốn)</a>
-                <div class="fw-bold">
-                  94.500 đ
-                  <p class="fw-normal old-price"><del>135.000</del></p>
-                </div>
-
-                <div class="d-flex align-items-center">
-                  <div class="input-group quantity-selector">
-                    <button class="btn btn-decrease" type="button" (click)="decreaseQuantity()">-</button>
-                    <input type="text" class="form-control text-center fw-bold" [(ngModel)]="quantity" readonly>
-                    <button class="btn btn-increase" type="button" (click)="increaseQuantity()">+</button>
-                  </div>
-                  <button class="btn-trash"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-
-              <div class="col-3 col-md-2">
-                <span class="text-danger fw-bold">94.500 đ</span>
-              </div>
-            </div>
-
-            <div class="row cart-items">
-              <div class="col-3 col-md-2">
-                <img src="assets/img/cart/item-cart.jpg" class="img-fluid" alt="" style="width: 120px;">
-              </div>
-
-              <div class="col-6 col-md-8">
-                <a routerLink="/detail-product" class="text-decoration-none title-product">Bộ Sách Khoa Học Bỏ Túi (5 Cuốn)</a>
-                <div class="fw-bold">
-                  94.500 đ
-                  <p class="fw-normal old-price"><del>135.000</del></p>
-                </div>
-
-                <div class="d-flex align-items-center">
-                  <div class="input-group quantity-selector">
-                    <button class="btn btn-decrease" type="button" (click)="decreaseQuantity()">−</button>
-                    <input type="text" class="form-control text-center fw-bold" [(ngModel)]="quantity" readonly>
-                    <button class="btn btn-increase" type="button" (click)="increaseQuantity()">+</button>
-                  </div>
-                  <button class="btn-trash"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-
-              <div class="col-3 col-md-2">
-                <span class="text-danger fw-bold">94.500 đ</span>
+                <span class="text-danger fw-bold">
+                  {{item.product.price * item.quantity | currency:'VND'}}
+                </span>
               </div>
             </div>
           </div>
@@ -102,15 +56,13 @@
 
           <div class="payment-detail">
             <p class="d-flex">
-              <label>Sản phẩm: </label>
-              <strong class="text-right">3</strong>
+              <label>Số lượng: </label>
+              <strong class="text-right">{{cartItems.length}}</strong>
             </p>
-
             <p class="d-flex">
               <label>Tổng tiền: </label>
-              <strong class="text-right">341.600 đ</strong>
+              <strong class="text-right">{{total | currency:'VND'}}</strong>
             </p>
-
             <p class="d-flex">
               <label>Giảm giá: </label>
               <strong class="text-right">0</strong>
@@ -120,7 +72,7 @@
 
             <p class="d-flex" style="margin-bottom: 1rem !important;">
               <strong class="text-success">Thanh toán: </strong>
-              <strong class="text-payment text-danger fw-bold">341.600 đ</strong>
+              <strong class="text-payment text-danger fw-bold">{{total | currency:'VND'}}</strong>
             </p>
           </div>
 
