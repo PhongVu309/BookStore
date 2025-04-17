@@ -5,7 +5,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product } from '../../services/products/product.service';
 import { PublisherService } from '../../services/publisher/publisher.service';
 import { AuthorService } from '../../services/author/author.service';
-import { cartService } from '../../services/cart/cart-service.service';
+import { CartService } from '../../services/cart/cart-service.service';
 
 @Component({
   selector: 'app-detail-products',
@@ -26,7 +26,7 @@ export class DetailProductsComponent implements OnInit {
     private productService: ProductService,
     private publisherService: PublisherService,
     private authorService: AuthorService,
-    private cartService: cartService,
+    private cartService: CartService,
   ) {}
 
   ngOnInit() {

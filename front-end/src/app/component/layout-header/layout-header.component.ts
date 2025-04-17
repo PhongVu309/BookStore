@@ -8,7 +8,7 @@ import { PublisherService, Publisher } from '../../services/publisher/publisher.
 import { ProductService, Product } from '../../services/products/product.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { cartService } from '../../services/cart/cart-service.service';
+import { CartService } from '../../services/cart/cart-service.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -33,7 +33,7 @@ export class LayoutHeaderComponent implements OnInit {
     private authorService: AuthorService,
     private publisherService: PublisherService,
     private productService: ProductService,
-    private cartService: cartService,
+    private cartService: CartService,
     private router: Router
   ) {
     this.cartService.getCart().subscribe(items => {

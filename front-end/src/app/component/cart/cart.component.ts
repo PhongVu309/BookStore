@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CartItem, cartService } from '../../services/cart/cart-service.service';
+import { CartItem, CartService } from '../../services/cart/cart-service.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,13 +14,17 @@ export class CartComponent implements OnInit {
   quantity: number = 1;
   cartItems: CartItem[] = [];
   total: number = 0;
+  payTotal: number = 0;
+  totalDiscount: number = 0;
 
-  constructor(private cartService: cartService) {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
     this.cartService.getCart().subscribe(items => {
       this.cartItems = items;
       this.total = this.cartService.getTotal();
+      this.payTotal = this.cartService.getPayableTotal();
+      this.totalDiscount = this.cartService.getTotalDiscount();
     });
   }
 
@@ -38,10 +42,12 @@ export class CartComponent implements OnInit {
     const newQuantity = item.quantity + change;
     if (newQuantity > 0) {
       this.cartService.updateQuantity(item.product.id, newQuantity);
+      this.totalDiscount = this.cartService.getTotalDiscount();
     }
   }
 
   removeItem(productId: number): void {
     this.cartService.removeItem(productId);
+    this.totalDiscount = this.cartService.getTotalDiscount();
   }
 }

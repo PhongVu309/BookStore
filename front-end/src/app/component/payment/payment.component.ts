@@ -3,7 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CartItem, cartService } from '../../services/cart/cart-service.service';
+import { CartItem, CartService } from '../../services/cart/cart-service.service';
 
 @Component({
   selector: 'app-payment',
@@ -13,7 +13,7 @@ import { CartItem, cartService } from '../../services/cart/cart-service.service'
   styleUrl: './payment.component.css'
 })
 export class PaymentComponent implements OnInit {
-  private http = inject(HttpClient); // Inject HttpClient thay vì constructor
+  private http = inject(HttpClient);
   private fb = inject(FormBuilder);
 
   locationForm: FormGroup;
@@ -21,10 +21,10 @@ export class PaymentComponent implements OnInit {
   districts: any[] = [];
   wards: any[] = [];
   cartItems: CartItem[] = [];
-  total: number = 0;
+  payTotal: number = 0;
 
   constructor(
-    private cartService: cartService
+    private cartService: CartService
   ) {
     this.locationForm = this.fb.group({
       province: [''],
@@ -39,7 +39,7 @@ export class PaymentComponent implements OnInit {
     // Lấy thông tin giỏ hàng
     this.cartService.getCart().subscribe(items => {
       this.cartItems = items;
-      this.total = this.cartService.getTotal();
+      this.payTotal = this.cartService.getPayableTotal();
     });
   }
 

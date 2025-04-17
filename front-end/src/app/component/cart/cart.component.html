@@ -65,14 +65,14 @@
             </p>
             <p class="d-flex">
               <label>Giảm giá: </label>
-              <strong class="text-right">0</strong>
+              <strong class="text-right text-danger">- {{totalDiscount | currency: 'VND'}}</strong>
             </p>
 
             <hr class="m-0" style="margin: 1rem 0 !important;">
 
             <p class="d-flex" style="margin-bottom: 1rem !important;">
               <strong class="text-success">Thanh toán: </strong>
-              <strong class="text-payment text-danger fw-bold">{{total | currency:'VND'}}</strong>
+              <strong class="text-payment text-success fw-bold">{{payTotal | currency:'VND'}}</strong>
             </p>
           </div>
 

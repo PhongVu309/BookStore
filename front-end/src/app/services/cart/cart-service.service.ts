@@ -10,7 +10,7 @@ export interface CartItem {
 @Injectable({
   providedIn: 'root'
 })
-export class cartService {
+export class CartService {
   private cartKey = 'shopping_cart';
   private cartItems: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
@@ -68,11 +68,25 @@ export class cartService {
 
   getTotal(): number {
     return this.cartItems.reduce((total, item) => {
+      return total + (item.product.original_price * item.quantity);
+    }, 0);
+  }
+
+  getPayableTotal(): number {
+    return this.cartItems.reduce((total, item) => {
       return total + (item.product.price * item.quantity);
     }, 0);
   }
 
   getItemCount(): number {
     return this.cartItems.reduce((count, item) => count + item.quantity, 0);
+  }
+
+  getTotalDiscount(): number {
+    return this.cartItems.reduce((totalDiscount, item) => {
+      const originalAmount = item.product.original_price * item.quantity;
+      const discountedAmount = item.product.price * item.quantity;
+      return totalDiscount + (originalAmount - discountedAmount);
+    }, 0);
   }
 }
