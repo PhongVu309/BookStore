@@ -8,6 +8,8 @@ import { PublisherService, Publisher } from '../../services/publisher/publisher.
 import { Category, CategoryService } from '../../services/category/category.service';
 import { RoleService, Role } from '../../services/role/role.service';
 import { OrderService, Order } from '../../services/order/order.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -41,7 +43,9 @@ export class AdminComponent implements OnInit {
     private publisherService: PublisherService,
     private categoryService: CategoryService,
     private roleService: RoleService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private authService: AuthService,  // Thêm AuthService
+    private router: Router            // Thêm Router
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -407,5 +411,9 @@ export class AdminComponent implements OnInit {
         price: calculatedPrice
       }, { emitEvent: false });
     }
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

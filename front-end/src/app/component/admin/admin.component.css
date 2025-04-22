@@ -197,6 +197,10 @@ header {
   font-size: 0.875rem;
 }
 
+.registered-user-dropdown {
+  cursor: pointer;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {

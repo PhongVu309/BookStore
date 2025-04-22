@@ -43,9 +43,14 @@
           <input type="text" placeholder="Tìm kiếm...">
           <i class="fas fa-search"></i>
         </div>
-        <div class="user-info">
-          <span>Admin</span>
-          <i class="fas fa-user-circle"></i>
+        <div class="user-info dropdown">
+          <a href="#" class="dropdown-toggle text-decoration-none text-black" data-bs-toggle="dropdown">
+            <span>Admin </span>
+            <i class="fas fa-user-circle"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end registered-user-dropdown">
+            <li><a class="dropdown-item" (click)="logout()">Đăng xuất</a></li>
+          </ul>
         </div>
       </div>
     </header>

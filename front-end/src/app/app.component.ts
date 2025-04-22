@@ -1,15 +1,30 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { LayoutHeaderComponent } from "./component/layout-header/layout-header.component";
-import { LayoutFooterComponent } from "./component/layout-footer/layout-footer.component";
-import { AdminComponent } from "./component/admin/admin.component";
+import { LayoutHeaderComponent } from './component/layout-header/layout-header.component';
+import { LayoutFooterComponent } from './component/layout-footer/layout-footer.component';
+import { AdminComponent } from './component/admin/admin.component';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LayoutHeaderComponent, LayoutFooterComponent, AdminComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    LayoutHeaderComponent,
+    LayoutFooterComponent,
+    AdminComponent
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'BookStore';
+  isAdmin: boolean = false;
+
+  constructor(private authService: AuthService) {
+    this.authService.currentUser.subscribe(user => {
+      this.isAdmin = user?.roleId === 1;
+    });
+  }
 }

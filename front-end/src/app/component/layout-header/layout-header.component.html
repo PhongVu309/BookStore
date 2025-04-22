@@ -128,14 +128,27 @@
         <h5>Giỏ hàng</h5>
       </a>
       <div class="dropdown">
-        <a routerLink="/login" class="icon d-flex flex-column align-items-center">
-          <i class="fas fa-user"></i>
-          <h5>Tài khoản</h5>
-        </a>
-        <div class="dropdown-menu">
-          <a routerLink="/login">Đăng nhập</a>
-          <a routerLink="/register">Đăng ký</a>
-        </div>
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="icon d-flex flex-column align-items-center">
+            <i class="fas fa-user"></i>
+            <h5>Tài khoản</h5>
+          </a>
+          <div class="dropdown-menu">
+            <a routerLink="/login">Đăng nhập</a>
+            <a routerLink="/register">Đăng ký</a>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <a href="#" class="icon d-flex flex-column align-items-center" data-bs-toggle="dropdown">
+            <i class="fas fa-user"></i>
+            <h5>{{currentUser?.username}}</h5>
+          </a>
+          <div class="dropdown-menu">
+            <a routerLink="/account">Quản lý tài khoản</a>
+            <a href="#" (click)="logout()">Đăng xuất</a>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

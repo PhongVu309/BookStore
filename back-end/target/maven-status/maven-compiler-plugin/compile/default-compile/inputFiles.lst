@@ -21,6 +21,7 @@ E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\Book
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\model\Product.java
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\repository\PublisherRepository.java
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\model\Category.java
+E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\config\SecurityConfig.java
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\model\Role.java
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\service\RoleService.java
 E:\VS code\Work\DATN\BookStore\back-end\src\main\java\com\example\bookstore\service\CategoryService.java

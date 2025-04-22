@@ -5,27 +5,27 @@
     </div>
 
     <div class="row form-login">
-      <label for="">Họ và Tên</label>
+      <label for="">Họ và Tên <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Họ tên*" [(ngModel)]="name">
         <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
       </div>
-      <label for="">Email</label>
+      <label for="">Email <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Email*" [(ngModel)]="email">
         <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
       </div>
-      <label for="">Số điện thoại</label>
+      <label for="">Số điện thoại <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Số điện thoại*" [(ngModel)]="phone">
         <span class="input-group-text"><i class="fa-solid fa-mobile"></i></span>
       </div>
-      <label for="Mật khẩu">Mật khẩu</label>
+      <label for="Mật khẩu">Mật khẩu <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="password" class="form-control" placeholder="Mật khẩu*" [(ngModel)]="password">
         <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
       </div>
-      <label for="Nhập lại mật khẩu">Nhập lại mật khẩu</label>
+      <label for="Nhập lại mật khẩu">Nhập lại mật khẩu <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="password" class="form-control" placeholder="Nhập lại mật khẩu*" [(ngModel)]="confirmPassword">
         <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
@@ -34,7 +34,10 @@
       <div class="text-danger text-center" *ngIf="errorMessage">{{ errorMessage }}</div>
 
       <div class="row">
-          <button type="button" class="btn-sm btn-login" (click)="register()">Đăng ký</button>
+          <button type="button" class="btn-sm btn-login" (click)="register()" [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              Đăng ký
+          </button>
       </div>
 
       <div class="row register-login">

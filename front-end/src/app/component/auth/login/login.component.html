@@ -5,19 +5,19 @@
     </div>
 
     <div class="row form-login">
-      <label for="">Tài khoản</label>
+      <label for="">Tài khoản <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Số điện thoại*" [(ngModel)]="phone" (blur)="validatePhone()">
         <span class="input-group-text"><i class="fa-solid fa-mobile"></i></span>
       </div>
-      <label for="">Mật khẩu</label>
+      <label for="">Mật khẩu <span class="text-danger">*</span></label>
       <div class="input-group mb-3">
         <input type="password" class="form-control" placeholder="Mật khẩu*" [(ngModel)]="password" (blur)="validatePassword()">
         <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
       </div>
       <div class="text-danger text-center" *ngIf="errorMessage">{{ errorMessage }}</div>
       <div class="row">
-          <button type="button" class="btn-sm btn-login" >Đăng nhập</button>
+          <button type="button" class="btn-sm btn-login" (click)="login()">Đăng nhập</button>
       </div>
 
       <div class="row register-login">

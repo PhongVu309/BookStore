@@ -9,6 +9,7 @@ import { ProductService, Product } from '../../services/products/product.service
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CartService } from '../../services/cart/cart-service.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -26,6 +27,8 @@ export class LayoutHeaderComponent implements OnInit {
   isLoading: boolean = false;
   showDropdown: boolean = false;
   cartItemCount: number = 0;
+  isLoggedIn: boolean = false;
+  currentUser: any = null;
   private searchSubject = new Subject<string>();
 
   constructor(
@@ -34,10 +37,16 @@ export class LayoutHeaderComponent implements OnInit {
     private publisherService: PublisherService,
     private productService: ProductService,
     private cartService: CartService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.cartService.getCart().subscribe(items => {
       this.cartItemCount = this.cartService.getItemCount();
+    });
+
+    this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+      this.currentUser = user;
     });
   }
 
@@ -120,5 +129,9 @@ export class LayoutHeaderComponent implements OnInit {
     if (this.searchTerm && this.filteredProducts.length > 0) {
       this.showDropdown = true;
     }
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
