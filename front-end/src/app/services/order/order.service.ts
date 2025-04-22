@@ -12,11 +12,7 @@ export interface Order {
   note: string;
   orderStatus: string;
   createdAt: string;
-  user?: {
-    id: number;
-    name: string;
-    email: string;
-  };
+  userId?: number | null; // Thêm trường userId
 }
 
 @Injectable({
@@ -45,5 +41,9 @@ export class OrderService {
 
   updateOrder(order: Order): Observable<Order> {
     return this.http.put<Order>(`${this.apiUrl}/${order.id}`, order);
+  }
+
+  getOrdersByUserId(userId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/user/${userId}`);
   }
 }

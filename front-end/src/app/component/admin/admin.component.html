@@ -340,9 +340,9 @@
                         (change)="updateOrderStatus(order, order.orderStatus)"
                       >
                         <option value="pending">Đang chờ xử lý</option>
-                        <option value="shipped">Đang giao hàng</option>
-                        <option value="delivered">Đã giao hàng</option>
                         <option value="cancelled">Đã hủy</option>
+                        <option value="delivered">Đã giao hàng</option>
+                        <option value="shipped">Đang giao hàng</option>
                       </select>
                     </td>
                     <td>{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>

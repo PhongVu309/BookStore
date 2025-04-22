@@ -1,0 +1,120 @@
+<div class="container bg-light">
+  <div class="container-fluid bg-light py-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a class="text-decoration-none" [routerLink]="['/']" routerLinkActive="router-link-active" >Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Quản lý tài khoản</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">
+        CẬP NHẬT TÀI KHOẢN
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">
+        LỊCH SỬ ĐƠN HÀNG
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content p-3" id="accountTabsContent">
+    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <form id="account-form" (ngSubmit)="updateProfile()">
+        <!-- Alert messages -->
+        <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
+
+        <div class="row form-group">
+          <div class="col-md-6">
+            <label for="" class="font-weight-bold">Họ và tên <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="name"
+                   [(ngModel)]="currentUser.username"
+                   name="username"
+                   placeholder="Nhập họ và tên" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="" class="font-weight-bold">Mật khẩu</label>
+            <input type="password" class="form-control" id="password"
+                   [(ngModel)]="currentUser.password"
+                   name="password"
+                   placeholder="Để trống nếu không đổi mật khẩu">
+          </div>
+        </div>
+
+        <div class="row mb-3 form-group">
+          <div class="col-md-6">
+            <label for="" class="font-weight-bold">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email"
+                   [(ngModel)]="currentUser.email"
+                   name="email"
+                   placeholder="Nhập email" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="" class="font-weight-bold">Số điện thoại <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="phone"
+                   [(ngModel)]="currentUser.phoneNumber"
+                   name="phoneNumber"
+                   placeholder="Nhập số điện thoại" required>
+          </div>
+        </div>
+
+        <div class="m-0 pt-3"></div>
+
+        <div class="group-btn">
+          <button type="button" class="btn btn-secondary" routerLink="/">Về trang chủ</button>
+          <button type="submit" class="btn btn-danger ms-3">Cập nhật</button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+      <h3 class="mb-4">Lịch sử đơn hàng</h3>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Mã đơn hàng</th>
+              <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+              <th>Địa chỉ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="orders.length === 0">
+              <td colspan="5" class="text-center">Chưa có đơn hàng nào</td>
+            </tr>
+            <tr *ngFor="let order of orders">
+              <td>#{{ order.id }}</td>
+              <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ order.totalPrice | number }} đ</td>
+              <td>
+                <span [ngClass]="{
+                  'badge bg-warning': order.orderStatus === 'pending',
+                  'badge bg-success': order.orderStatus === 'completed',
+                  'badge bg-danger': order.orderStatus === 'cancelled',
+                  'badge bg-info': order.orderStatus === 'shipping'
+                }">
+                  {{ order.orderStatus === 'pending' ? 'Chờ xử lý' :
+                     order.orderStatus === 'completed' ? 'Đã hoàn thành' :
+                     order.orderStatus === 'cancelled' ? 'Đã hủy' :'Đang giao hàng' }}
+                </span>
+              </td>
+              <td>{{ order.address }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

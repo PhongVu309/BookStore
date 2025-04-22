@@ -15,6 +15,7 @@ import { DetailPublisherComponent } from './component/publisher/detail-publisher
 import { DetailAuthorComponent } from './component/author/detail-author/detail-author.component';
 import { AuthorComponent } from './component/author/search-author/search-author.component';
 import { AdminComponent } from './component/admin/admin.component';
+import { AccountComponent } from './component/account/account.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -33,5 +34,5 @@ export const routes: Routes = [
   {path: 'book-categories/:categoryName', component: BookCatgoriesComponent},
   {path: 'search-publisher', component: SearchPublisherComponent},
   {path: 'detail-publisher/:publisherName', component: DetailPublisherComponent},
-  {path: 'admin', component: AdminComponent},
+  {path: 'account', component: AccountComponent},
 ];

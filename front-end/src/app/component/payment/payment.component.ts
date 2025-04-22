@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CartItem, CartService } from '../../services/cart/cart-service.service';
 import { OrderService } from '../../services/order/order.service';
 import { OrderDetailService } from '../../services/orderDetail/order-detail.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-payment',
@@ -29,7 +30,8 @@ export class PaymentComponent implements OnInit {
     private cartService: CartService,
     private orderService: OrderService,
     private orderDetailService: OrderDetailService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService  // Thêm AuthService
   ) {
     this.locationForm = this.fb.group({
       province: ['', Validators.required],
@@ -109,6 +111,8 @@ export class PaymentComponent implements OnInit {
     }
 
     try {
+      const currentUser = this.authService.getCurrentUser();
+
       const order = {
         name: this.paymentForm.get('fullname')?.value,
         email: this.paymentForm.get('email')?.value,
@@ -117,8 +121,18 @@ export class PaymentComponent implements OnInit {
         totalPrice: this.payTotal,
         note: this.paymentForm.get('note')?.value,
         orderStatus: 'pending',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        userId: currentUser ? currentUser.id : null  // Thêm userId
       };
+
+      // Auto-fill form data if user is logged in
+      if (currentUser) {
+        this.paymentForm.patchValue({
+          fullname: currentUser.username || this.paymentForm.get('fullname')?.value,
+          email: currentUser.email || this.paymentForm.get('email')?.value,
+          phone: currentUser.phoneNumber || this.paymentForm.get('phone')?.value
+        });
+      }
 
       this.orderService.createOrder(order).subscribe({
         next: (createdOrder) => {

@@ -22,6 +22,9 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
+        if (order.getUserId() == null) {
+            order.setUserId(null);
+        }
         return orderRepository.save(order);
     }
 
@@ -37,5 +40,9 @@ public class OrderService {
         } catch (Exception e) {
             throw new RuntimeException("Không thể xóa đơn hàng: " + e.getMessage());
         }
+    }
+
+    public List<Order> getOrdersByUserId(int userId) {
+        return orderRepository.findByUserId(userId);
     }
 }
