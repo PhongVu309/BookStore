@@ -116,7 +116,7 @@ export class PaymentComponent implements OnInit {
         address: this.getFullAddress(),
         totalPrice: this.payTotal,
         note: this.paymentForm.get('note')?.value,
-        orderStatus: 'Đang xử lý',
+        orderStatus: 'pending',
         createdAt: new Date().toISOString()
       };
 
