@@ -20,12 +20,6 @@ public class OrderDetailController {
         return ResponseEntity.ok(orderDetails);
     }
 
-    @PostMapping
-    public ResponseEntity<OrderDetail> createOrderDetail(@RequestBody OrderDetail orderDetail) {
-        OrderDetail createdOrderDetail = orderDetailService.createOrderDetail(orderDetail);
-        return ResponseEntity.ok(createdOrderDetail);
-    }
-
     @PostMapping("/batch")
     public ResponseEntity<List<OrderDetail>> createOrderDetails(@RequestBody List<OrderDetail> orderDetails) {
         List<OrderDetail> createdOrderDetails = orderDetailService.createOrderDetails(orderDetails);

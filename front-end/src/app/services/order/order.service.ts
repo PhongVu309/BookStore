@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Order {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   phoneNumber: string;
@@ -12,7 +12,7 @@ export interface Order {
   note: string;
   orderStatus: string;
   createdAt: string;
-  user: {
+  user?: {
     id: number;
     name: string;
     email: string;
@@ -33,6 +33,10 @@ export class OrderService {
 
   getOrderById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.apiUrl}/${id}`);
+  }
+
+  createOrder(order: Order): Observable<Order> {
+    return this.http.post<Order>(this.apiUrl, order);
   }
 
   deleteOrder(id: number): Observable<void> {

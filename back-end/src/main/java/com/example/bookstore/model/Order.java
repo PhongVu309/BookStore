@@ -23,7 +23,7 @@ public class Order {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true) // Cho phép null vì có thể thanh toán không cần đăng nhập
     private User user;
 
     // Getters and Setters

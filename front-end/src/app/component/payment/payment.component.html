@@ -14,31 +14,36 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 bg-white payment-form">
+      <div class="col-lg-8 bg-white payment-form" [formGroup]="paymentForm">
         <h5>Địa chỉ giao hàng</h5>
         <div class="form-group">
-          <label for="">
+          <label for="fullname">
             Họ tên
             <span class="text-danger">*</span>
           </label>
-          <input type="text" name="fullname" class="form-control" value="" />
+          <div class="form-group">
+            <input type="text" formControlName="fullname" class="form-control" />
+            <div *ngIf="paymentForm.get('fullname')?.invalid && paymentForm.get('fullname')?.touched" class="text-danger">
+              Vui lòng nhập họ tên
+            </div>
+          </div>
         </div>
 
         <div class="row form-group">
           <div class="col-md-6">
-            <label for="">
+            <label for="email">
               Email
               <span class="text-danger">*</span>
             </label>
-            <input type="text" name="email" class="form-control" value="" />
+            <input type="text" formControlName="email" class="form-control" />
           </div>
 
           <div class="col-md-6">
-            <label for="">
+            <label for="phone">
               Số điện thoại
               <span class="text-danger">*</span>
             </label>
-            <input type="text" name="phone" class="form-control" value="" />
+            <input type="text" formControlName="phone" class="form-control" />
           </div>
         </div>
 
@@ -103,13 +108,12 @@
               </div>
 
               <div class="col-md-6 col-12 form-group">
-                <label for="ward" class="form-label">Số nhà</label>
+                <label for="houseNumber" class="form-label">Số nhà</label>
                 <input
                   type="text"
                   placeholder="Số nhà, tên đường/phường/xã/thị trấn"
                   class="form-control"
-                  name="address"
-                  value=""
+                  formControlName="houseNumber"
                 />
               </div>
             </div>
@@ -117,8 +121,8 @@
         </div>
 
         <div class="form-group">
-          <label for="">Ghi chú</label>
-          <textarea name="note" id="" rows="3" class="form-control"></textarea>
+          <label for="note">Ghi chú</label>
+          <textarea formControlName="note" rows="3" class="form-control"></textarea>
         </div>
         <hr class="mt-0" style="margin: 0" />
       </div>
@@ -190,7 +194,7 @@
         <button class="btn btn-secondary me-3" routerLink="/cart">
           Quay lại
         </button>
-        <button class="btn btn-danger">Thanh toán</button>
+        <button class="btn btn-danger" (click)="onCheckout()">Thanh toán</button>
       </div>
     </div>
   </div>
