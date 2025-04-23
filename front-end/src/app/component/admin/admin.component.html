@@ -8,7 +8,7 @@
       <ul>
         <li [class.active]="activeTab === 'dashboard'" (click)="setActiveTab('dashboard')">
           <i class="fas fa-home"></i>
-          Dashboard
+          Thống kê
         </li>
         <li [class.active]="activeTab === 'products'" (click)="setActiveTab('products')">
           <i class="fas fa-box"></i>
@@ -59,8 +59,8 @@
     <div class="content">
       <div [ngSwitch]="activeTab">
         <div *ngSwitchCase="'dashboard'">
-          <h2>Dashboard</h2>
-          <!-- Dashboard content -->
+          <h2>Thống kê</h2>
+          <!-- Statistics content -->
         </div>
         <div *ngSwitchCase="'products'">
           <div class="products-management">
@@ -162,7 +162,7 @@
                   <tr *ngFor="let product of products">
                     <td>{{product.id}}</td>
                     <td>{{product.name}}</td>
-                    <td>{{product.price | currency:'VND'}}</td>
+                    <td>{{product.price | number }} đ</td>
                     <td>{{product.discount}}%</td>
                     <td>{{getCategoryName(product.category_id)}}</td>
                     <td>{{getAuthorName(product.author_id)}}</td>
@@ -314,11 +314,9 @@
                   <tr>
                     <th>ID</th>
                     <th>Tên khách hàng</th>
-                    <th>Email</th>
                     <th>Số điện thoại</th>
                     <th>Địa chỉ</th>
-                    <th>Tổng tiền</th>
-                    <th>Ghi chú</th>
+                    <th style="width: 100px;">Tổng tiền</th>
                     <th>Trạng thái</th>
                     <th>Ngày tạo</th>
                     <th>Thao tác</th>
@@ -328,11 +326,9 @@
                   <tr *ngFor="let order of orders">
                     <td>{{order.id}}</td>
                     <td>{{order.name}}</td>
-                    <td>{{order.email}}</td>
                     <td>{{order.phoneNumber}}</td>
                     <td>{{order.address}}</td>
-                    <td>{{order.totalPrice | currency:'VND'}}</td>
-                    <td>{{order.note}}</td>
+                    <td>{{order.totalPrice | number}} đ</td>
                     <td>
                       <select
                         class="form-control form-control-sm"
@@ -340,14 +336,23 @@
                         (change)="updateOrderStatus(order, order.orderStatus)"
                       >
                         <option value="pending">Đang chờ xử lý</option>
-                        <option value="cancelled">Đã hủy</option>
-                        <option value="delivered">Đã giao hàng</option>
                         <option value="shipped">Đang giao hàng</option>
+                        <option value="delivered">Đã giao hàng</option>
+                        <option value="cancelled">Đã hủy</option>
                       </select>
                     </td>
                     <td>{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
-                    <td>
-                      <button class="btn btn-sm btn-danger">Xóa</button>
+                    <td class="d-flex">
+                      <button class="mb-4 btn btn-sm btn-secondary"
+                        data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#orderDetailModal' + order.id"
+                      >
+                        <i class="fa fa-eye"></i>
+                      </button>
+                      <button class="mb-4 ms-3 btn btn-sm btn-danger">Xóa</button>
+
+                      <!-- Order Detail Modal -->
+                       <app-order-detail-modal [order]="order"></app-order-detail-modal>
                     </td>
                   </tr>
                 </tbody>

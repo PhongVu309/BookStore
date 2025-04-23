@@ -22,9 +22,9 @@
                   {{item.product.name}}
                 </a>
                 <div class="fw-bold">
-                  {{item.product.price | currency:'VND'}}
+                  {{item.product.price | number }} đ
                   <p class="fw-normal old-price">
-                    <del>{{item.product.original_price | currency:'VND'}}</del>
+                    <del>{{item.product.original_price | number }} đ</del>
                   </p>
                 </div>
 
@@ -42,7 +42,7 @@
 
               <div class="col-3 col-md-2">
                 <span class="text-danger fw-bold">
-                  {{item.product.price * item.quantity | currency:'VND'}}
+                  {{item.product.price * item.quantity | number }} đ
                 </span>
               </div>
             </div>
@@ -61,18 +61,18 @@
             </p>
             <p class="d-flex">
               <label>Tổng tiền: </label>
-              <strong class="text-right">{{total | currency:'VND'}}</strong>
+              <strong class="text-right">{{total | number }} đ</strong>
             </p>
             <p class="d-flex">
               <label>Giảm giá: </label>
-              <strong class="text-right text-danger">- {{totalDiscount | currency: 'VND'}}</strong>
+              <strong class="text-right text-danger">- {{totalDiscount | number }} đ</strong>
             </p>
 
             <hr class="m-0" style="margin: 1rem 0 !important;">
 
             <p class="d-flex" style="margin-bottom: 1rem !important;">
               <strong class="text-success">Thanh toán: </strong>
-              <strong class="text-payment text-success fw-bold">{{payTotal | currency:'VND'}}</strong>
+              <strong class="text-payment text-success fw-bold">{{payTotal | number }} đ</strong>
             </p>
           </div>
 

@@ -1,0 +1,54 @@
+<div class="modal fade" [id]="'orderDetailModal' + order?.id" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chi tiết đơn hàng #{{order?.id}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="order-info mb-4">
+          <h6>Thông tin đơn hàng</h6>
+          <p><strong>Ngày đặt:</strong> {{order?.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+          <p><strong>Người nhận:</strong> {{order?.name}}</p>
+          <p><strong>Số điện thoại:</strong> {{order?.phoneNumber}}</p>
+          <p><strong>Địa chỉ:</strong> {{order?.address}}</p>
+          <p><strong>Ghi chú:</strong> {{order?.note}}</p>
+        </div>
+        <div class="order-details">
+          <h6>Chi tiết sản phẩm</h6>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr >
+                  <th class="text-center">Mã SP</th>
+                  <th>Tên sản phẩm</th>
+                  <th class="text-center">Số lượng</th>
+                  <th>Đơn giá</th>
+                  <th class="text-center">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of orderDetails">
+                  <td class="text-center">{{detail.productId}}</td>
+                  <td style="max-width: 300px;">{{detail.product?.name}}</td>
+                  <td class="text-center">{{detail.quantity}}</td>
+                  <td>{{detail.price | number}} đ</td>
+                  <td class="text-center">{{detail.price * detail.quantity | number}} đ</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" class="text-end"><strong>Tổng tiền:</strong></td>
+                  <td><strong>{{order?.totalPrice | number}} đ</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

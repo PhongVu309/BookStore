@@ -8,7 +8,15 @@ export interface OrderDetail {
   quantity: number;
   price: number;
   productId: number;
-  orderId: number; // Đã loại bỏ khả năng undefined
+  orderId: number;
+  product?: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface OrderDetailWithProduct extends OrderDetail {
+  product?: Product;
 }
 
 @Injectable({
@@ -21,5 +29,9 @@ export class OrderDetailService {
 
   createOrderDetails(orderDetails: OrderDetail[]): Observable<OrderDetail[]> {
     return this.http.post<OrderDetail[]>(`${this.apiUrl}/batch`, orderDetails);
+  }
+
+  getOrderDetailsByOrderId(orderId: number): Observable<OrderDetail[]> {
+    return this.http.get<OrderDetail[]>(`${this.apiUrl}/order/${orderId}`);
   }
 }

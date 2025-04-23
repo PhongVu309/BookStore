@@ -147,8 +147,8 @@
           <a routerLink="/detail-product/{{ product.id }}" class="name-product">
             <h6>{{ product.name }}</h6>
           </a>
-          <p class="price" style="margin-top: 20px;">{{ product.price | currency:'VND' }}</p>
-            <p><del>{{ product.original_price | currency:'VND' }}</del></p>
+          <p class="price" style="margin-top: 20px;">{{ product.price | number }} đ</p>
+            <p><del>{{ product.original_price | number }} đ</del></p>
             <p>
             <span class="star-rating" *ngFor="let star of [].constructor(product.rating)">
               <i class="fa-solid fa-star"></i>
@@ -217,8 +217,8 @@
             <a routerLink="/detail-product/{{ product.id }}" class="name-product">
               <h6>{{ product.name }}</h6>
             </a>
-            <p class="price" style="margin-top: 20px;">{{ product.price | currency:'VND' }}</p>
-            <p><del>{{ product.original_price | currency:'VND' }}</del></p>
+            <p class="price" style="margin-top: 20px;">{{ product.price | number }} đ</p>
+            <p><del>{{ product.original_price | number }} đ</del></p>
             <p>
               <span class="star-rating" *ngFor="let star of [].constructor(product.rating)">
                 <i class="fa-solid fa-star"></i>

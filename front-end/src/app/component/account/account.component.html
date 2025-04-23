@@ -99,18 +99,28 @@
               <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
               <td>{{ order.totalPrice | number }} đ</td>
               <td>
-                <span [ngClass]="{
-                  'badge bg-warning': order.orderStatus === 'pending',
-                  'badge bg-success': order.orderStatus === 'completed',
-                  'badge bg-danger': order.orderStatus === 'cancelled',
-                  'badge bg-info': order.orderStatus === 'shipping'
+                <span
+                class="badge"
+                [ngClass]="{
+                  'bg-warning': order.orderStatus === 'pending',
+                  'bg-info': order.orderStatus === 'shipped',
+                  'bg-success': order.orderStatus === 'delivered',
+                  'bg-danger': order.orderStatus === 'cancelled',
                 }">
-                  {{ order.orderStatus === 'pending' ? 'Chờ xử lý' :
-                     order.orderStatus === 'completed' ? 'Đã hoàn thành' :
-                     order.orderStatus === 'cancelled' ? 'Đã hủy' :'Đang giao hàng' }}
+                  {{ order.orderStatus === 'pending' ? 'Đang chờ xử lý' :
+                     order.orderStatus === 'shipped' ? 'Đang giao hàng' :
+                     order.orderStatus === 'delivered' ? 'Đã giao hàng' :'Đã hủy' }}
                 </span>
               </td>
               <td>{{ order.address }}</td>
+              <td>
+                <button class="btn btn-outline-secondary"
+                        data-bs-toggle="modal"
+                        [attr.data-bs-target]="'#orderDetailModal' + order.id">
+                  Chi tiết đơn hàng
+                </button>
+                <app-order-detail-modal [order]="order"></app-order-detail-modal>
+              </td>
             </tr>
           </tbody>
         </table>

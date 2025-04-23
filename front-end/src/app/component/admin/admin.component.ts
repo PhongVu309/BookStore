@@ -10,11 +10,13 @@ import { RoleService, Role } from '../../services/role/role.service';
 import { OrderService, Order } from '../../services/order/order.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { OrderDetailModalComponent } from '../order-detail-modal/order-detail-modal.component';
+import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, OrderDetailModalComponent, ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
@@ -35,6 +37,57 @@ export class AdminComponent implements OnInit {
   editingCategoryId: number | null = null;
   editingAuthorId: number | null = null;
   editingPublisherId: number | null = null;
+
+  filterType: string = 'month';
+  startDate: string = new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0];
+  endDate: string = new Date().toISOString().split('T')[0];
+  totalOrders: number = 0;
+  totalRevenue: number = 0;
+  successOrders: number = 0;
+  pendingOrders: number = 0;
+
+  chartData: ChartConfiguration<'line'>['data'] = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Doanh thu',
+        data: [],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }
+    ]
+  };
+
+  chartOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function(value) {
+            return value.toLocaleString('vi-VN') + ' đ';
+          }
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                .format(context.parsed.y);
+            }
+            return label;
+          }
+        }
+      }
+    }
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -85,6 +138,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.loadAll();
+    this.updateChartData();
   }
 
   loadAll() {
@@ -384,21 +438,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  deleteOrder(id: number) {
-    if (confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
-      this.orderService.deleteOrder(id).subscribe({
-          next: () => {
-              this.loadOrders(); // Reload sau khi xóa thành công
-              alert('Xóa đơn hàng thành công');
-          },
-          error: (error) => {
-              console.error('Error deleting order:', error);
-              alert('Không thể xóa đơn hàng. Vui lòng thử lại!');
-          }
-      });
-  }
-  }
-
   // Thêm phương thức tính giá
   private calculatePrice() {
     const originalPrice = this.productForm.get('original_price')?.value;
@@ -411,6 +450,64 @@ export class AdminComponent implements OnInit {
         price: calculatedPrice
       }, { emitEvent: false });
     }
+  }
+
+  updateChartData() {
+    const start = new Date(this.startDate);
+    const end = new Date(this.endDate);
+
+    // Lọc đơn hàng trong khoảng thời gian
+    const filteredOrders = this.orders.filter(order => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= start && orderDate <= end;
+    });
+
+    // Cập nhật thống kê tổng quan
+    this.totalOrders = filteredOrders.length;
+    this.totalRevenue = filteredOrders.reduce((sum, order) => sum + order.totalPrice, 0);
+    this.successOrders = filteredOrders.filter(order => order.orderStatus === 'delivered').length;
+    this.pendingOrders = filteredOrders.filter(order => order.orderStatus === 'pending').length;
+
+    // Tạo dữ liệu cho biểu đồ
+    const groupedData = new Map();
+
+    filteredOrders.forEach(order => {
+      const date = new Date(order.createdAt);
+      let key;
+
+      switch(this.filterType) {
+        case 'day':
+          key = date.toISOString().split('T')[0];
+          break;
+        case 'month':
+          key = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+          break;
+        case 'year':
+          key = date.getFullYear().toString();
+          break;
+      }
+
+      if (!groupedData.has(key)) {
+        groupedData.set(key, 0);
+      }
+      groupedData.set(key, groupedData.get(key) + order.totalPrice);
+    });
+
+    // Sắp xếp dữ liệu theo thời gian
+    const sortedData = new Map([...groupedData.entries()].sort());
+
+    // Cập nhật dữ liệu biểu đồ
+    this.chartData = {
+      labels: Array.from(sortedData.keys()),
+      datasets: [
+        {
+          label: 'Doanh thu',
+          data: Array.from(sortedData.values()),
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }
+      ]
+    };
   }
 
   logout() {

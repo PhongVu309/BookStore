@@ -6,11 +6,12 @@ import { AuthService } from '../../services/auth/auth.service';
 import { User, UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';  // Add this import
 import { OrderService, Order } from '../../services/order/order.service';
+import { OrderDetailModalComponent } from '../order-detail-modal/order-detail-modal.component';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
+  imports: [RouterModule, CommonModule, FormsModule, OrderDetailModalComponent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css'
 })

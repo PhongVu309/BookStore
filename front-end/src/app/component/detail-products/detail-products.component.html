@@ -29,8 +29,8 @@
 
         <div class="row d-flex align-items-center">
           <div class="col-md-8 box-price">
-            <span class="price">{{ product.price | currency: 'VND' }}</span>
-            <span><del>{{ product.original_price | currency: 'VND' }}</del></span>
+            <span class="price">{{ product.price | number }} đ</span>
+            <span><del>{{ product.original_price | number }} đ</del></span>
           </div>
         </div>
 
@@ -90,8 +90,8 @@
              class="name-product">
             <h6>{{relatedProduct.name}}</h6>
           </a>
-          <p class="price">{{relatedProduct.price | currency:'VND'}}</p>
-          <p><del>{{relatedProduct.original_price | currency:'VND'}}</del></p>
+          <p class="price">{{relatedProduct.price | number }} đ</p>
+          <p><del>{{relatedProduct.original_price | number }} đ</del></p>
         </div>
       </div>
     </div>
