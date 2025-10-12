@@ -15,6 +15,13 @@ export interface Order {
   userId?: number | null; // Thêm trường userId
 }
 
+export interface OrderStatistics {
+    totalOrders: number;
+    totalRevenue: number;
+    successOrders: number;
+    pendingOrders: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -45,5 +52,17 @@ export class OrderService {
 
   getOrdersByUserId(userId: number): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  getStatistics(type: string, startDate: string, endDate: string) {
+    return this.http.get<any[]>(`${this.apiUrl}/statistics`, {
+        params: { type, startDate, endDate }
+    });
+  }
+
+  getStatisticsSummary(startDate: string, endDate: string): Observable<OrderStatistics> {
+    return this.http.get<OrderStatistics>(`${this.apiUrl}/statistics/summary`, {
+        params: { startDate, endDate }
+    });
   }
 }

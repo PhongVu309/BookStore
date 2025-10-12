@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -11,16 +11,16 @@ import { OrderService, Order } from '../../services/order/order.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { OrderDetailModalComponent } from '../order-detail-modal/order-detail-modal.component';
-import { ChartConfiguration } from 'chart.js';
+import { Chart, ChartConfiguration } from 'chart.js/auto';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, OrderDetailModalComponent, ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, OrderDetailModalComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   activeTab: string = 'dashboard';
   productForm: FormGroup;
   categoryForm: FormGroup;
@@ -45,6 +45,7 @@ export class AdminComponent implements OnInit {
   totalRevenue: number = 0;
   successOrders: number = 0;
   pendingOrders: number = 0;
+  cancelledOrders: number = 0; // Thêm biến này
 
   chartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -88,6 +89,9 @@ export class AdminComponent implements OnInit {
       }
     }
   };
+
+  private chart: Chart | undefined;
+  private updateInterval: any;
 
   constructor(
     private fb: FormBuilder,
@@ -139,6 +143,31 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this.loadAll();
     this.updateChartData();
+
+    // Cập nhật dữ liệu mỗi 30 giây
+    this.updateInterval = setInterval(() => {
+        this.updateChartData();
+    }, 30000);
+  }
+
+  ngAfterViewInit() {
+    this.initChart();
+  }
+
+  ngOnDestroy() {
+    // Dọn dẹp interval khi component bị hủy
+    if (this.updateInterval) {
+        clearInterval(this.updateInterval);
+    }
+  }
+
+  initChart() {
+    const ctx = document.getElementById('revenueChart') as HTMLCanvasElement;
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: this.chartData,
+      options: this.chartOptions
+    });
   }
 
   loadAll() {
@@ -262,6 +291,9 @@ export class AdminComponent implements OnInit {
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+    if (tab === 'dashboard') {
+        this.updateChartData();
+    }
   }
 
   // Helper methods
@@ -431,10 +463,11 @@ export class AdminComponent implements OnInit {
   updateOrderStatus(order: Order, newStatus: string) {
     const updatedOrder = { ...order, orderStatus: newStatus };
     this.orderService.updateOrder(updatedOrder).subscribe({
-      next: () => {
-        this.loadOrders();
-      },
-      error: (error) => console.error('Error updating order:', error)
+        next: () => {
+            this.loadOrders();  // Load lại danh sách đơn hàng
+            this.updateChartData();  // Cập nhật lại biểu đồ và thống kê
+        },
+        error: (error) => console.error('Error updating order:', error)
     });
   }
 
@@ -453,61 +486,52 @@ export class AdminComponent implements OnInit {
   }
 
   updateChartData() {
-    const start = new Date(this.startDate);
-    const end = new Date(this.endDate);
+    // Trước tiên load orders mới nhất
+    this.loadOrders();
 
-    // Lọc đơn hàng trong khoảng thời gian
-    const filteredOrders = this.orders.filter(order => {
-      const orderDate = new Date(order.createdAt);
-      return orderDate >= start && orderDate <= end;
+    this.orderService.getStatistics(
+        this.filterType,
+        this.startDate,
+        this.endDate
+    ).subscribe({
+        next: (data) => {
+            if (this.chart) {
+                // Cập nhật biểu đồ
+                this.chart.data.labels = data.map(item => item[0]);
+                this.chart.data.datasets[0].data = data.map(item => item[1]);
+                this.chart.update();
+
+                // Lọc đơn hàng trong khoảng thời gian đã chọn
+                const filteredOrders = this.orders.filter(order => {
+                    const orderDate = new Date(order.createdAt);
+                    return orderDate >= new Date(this.startDate)
+                           && orderDate <= new Date(this.endDate);
+                });
+
+                // Cập nhật thống kê tổng quan từ orders đã lọc
+                this.totalOrders = filteredOrders.length;
+
+                // Tính tổng doanh thu (không tính đơn hàng đã hủy)
+                this.totalRevenue = filteredOrders
+                    .reduce((sum, order) => {
+                        // Chỉ cộng doanh thu của đơn hàng không bị hủy
+                        if (order.orderStatus.toLowerCase() !== 'cancelled') {
+                            return sum + order.totalPrice;
+                        }
+                        return sum;
+                    }, 0);
+
+                // Đếm đơn hàng theo trạng thái từ danh sách đã lọc
+                this.successOrders = filteredOrders.filter(o =>
+                    o.orderStatus.toLowerCase() === 'delivered').length;
+                this.pendingOrders = filteredOrders.filter(o =>
+                    o.orderStatus.toLowerCase() === 'pending').length;
+                this.cancelledOrders = filteredOrders.filter(o =>
+                    o.orderStatus.toLowerCase() === 'cancelled').length;
+            }
+        },
+        error: (error) => console.error('Error loading statistics:', error)
     });
-
-    // Cập nhật thống kê tổng quan
-    this.totalOrders = filteredOrders.length;
-    this.totalRevenue = filteredOrders.reduce((sum, order) => sum + order.totalPrice, 0);
-    this.successOrders = filteredOrders.filter(order => order.orderStatus === 'delivered').length;
-    this.pendingOrders = filteredOrders.filter(order => order.orderStatus === 'pending').length;
-
-    // Tạo dữ liệu cho biểu đồ
-    const groupedData = new Map();
-
-    filteredOrders.forEach(order => {
-      const date = new Date(order.createdAt);
-      let key;
-
-      switch(this.filterType) {
-        case 'day':
-          key = date.toISOString().split('T')[0];
-          break;
-        case 'month':
-          key = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-          break;
-        case 'year':
-          key = date.getFullYear().toString();
-          break;
-      }
-
-      if (!groupedData.has(key)) {
-        groupedData.set(key, 0);
-      }
-      groupedData.set(key, groupedData.get(key) + order.totalPrice);
-    });
-
-    // Sắp xếp dữ liệu theo thời gian
-    const sortedData = new Map([...groupedData.entries()].sort());
-
-    // Cập nhật dữ liệu biểu đồ
-    this.chartData = {
-      labels: Array.from(sortedData.keys()),
-      datasets: [
-        {
-          label: 'Doanh thu',
-          data: Array.from(sortedData.values()),
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }
-      ]
-    };
   }
 
   logout() {

@@ -59,8 +59,74 @@
     <div class="content">
       <div [ngSwitch]="activeTab">
         <div *ngSwitchCase="'dashboard'">
-          <h2>Thống kê</h2>
-          <!-- Statistics content -->
+          <!-- Thêm phần này trước biểu đồ -->
+          <div class="statistics-cards">
+            <div class="stat-card">
+              <h4>Tổng đơn hàng</h4>
+              <div class="value">{{totalOrders}}</div>
+            </div>
+            <div class="stat-card">
+              <h4>Doanh thu</h4>
+              <div class="value">{{totalRevenue | number}} đ</div>
+            </div>
+            <div class="stat-card">
+              <h4>Đơn hàng thành công</h4>
+              <div class="value">{{successOrders}}</div>
+            </div>
+            <div class="stat-card">
+              <h4>Đơn hàng chờ xử lý</h4>
+              <div class="value">
+                {{pendingOrders}}
+                <small class="text-warning ms-2">({{(pendingOrders/totalOrders * 100) | number:'1.0-1'}}%)</small>
+              </div>
+            </div>
+            <!-- Thêm card mới cho đơn hàng đã hủy -->
+            <div class="stat-card">
+              <h4>Đơn hàng đã hủy</h4>
+              <div class="value">
+                {{cancelledOrders}}
+                <small class="text-danger ms-2">({{(cancelledOrders/totalOrders * 100) | number:'1.0-1'}}%)</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Thống kê doanh thu</h3>
+            </div>
+            <div class="card-body">
+              <!-- Bộ lọc -->
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <label class="form-label">Loại thống kê:</label>
+                  <select class="form-select" [(ngModel)]="filterType" (change)="updateChartData()">
+                    <option value="day">Theo ngày</option>
+                    <option value="month">Theo tháng</option>
+                    <option value="year">Theo năm</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Từ ngày:</label>
+                  <input type="date" class="form-control"
+                         [(ngModel)]="startDate"
+                         (change)="updateChartData()">
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Đến ngày:</label>
+                  <input type="date" class="form-control"
+                         [(ngModel)]="endDate"
+                         (change)="updateChartData()">
+                </div>
+              </div>
+
+              <!-- Biểu đồ -->
+              <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
         <div *ngSwitchCase="'products'">
           <div class="products-management">
